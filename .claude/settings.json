@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const d=JSON.parse(require('fs').readFileSync(0,'utf8'));const fp=d.file_path||'';if(fp&&['.ts','.tsx','.js','.jsx','.css','.json','.md'].some(e=>fp.endsWith(e))){require('child_process').execSync('npx --no prettier --write '+JSON.stringify(fp),{stdio:'pipe'})}\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const d=JSON.parse(require('fs').readFileSync(0,'utf8'));const cmd=d.command||'';if(cmd.includes('npm run build')||cmd.includes('next build')){const r=require('child_process').spawnSync('npm',['run','lint'],{encoding:'utf8'});if(r.status!==0){process.stderr.write('Lint errors — fix before building:\\n'+(r.stdout||r.stderr||''));process.exit(1)}}\""
+          }
+        ]
+      }
+    ]
+  }
+}
