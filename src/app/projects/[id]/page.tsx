@@ -12,12 +12,20 @@ export function generateStaticParams() {
 }
 
 function StatusBadge({ status }: { status: Project["status"] }) {
-  const map: Record<Project["status"], string> = {
+  if (status === "online") {
+    return (
+      <span className="shrink-0 flex items-center gap-1.5 px-2 py-0.5 text-xs rounded-full font-medium bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400">
+        <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+        Online
+      </span>
+    );
+  }
+  const map: Record<Exclude<Project["status"], "online">, string> = {
     completed: "bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400",
     "in-progress": "bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400",
     archived: "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400",
   };
-  const label: Record<Project["status"], string> = {
+  const label: Record<Exclude<Project["status"], "online">, string> = {
     completed: "Completed",
     "in-progress": "In Progress",
     archived: "Archived",

@@ -18,8 +18,9 @@ export const projects: Project[] = [
       'A full-stack analytics dashboard that stores and visualises team performance data across ICC cricket tournaments using PostgreSQL. A LangGraph-based conversational AI agent sits on top of the data layer, enabling users to ask natural language questions — such as "Who has the best win rate in T20 World Cups?" — and receive structured, data-grounded answers. The agent translates questions into SQL queries, executes them against live data, and formats results into readable responses.',
     tags: ["LangGraph", "LangChain", "Python", "PostgreSQL", "AI Agent", "NLP", "SQL", "Dashboard"],
     githubUrl: "https://github.com/k-darshil/icc-rankings",
+    liveUrl: "https://icc-rankings.darshil-ai.com",
     featured: true,
-    status: "in-progress",
+    status: "online",
     date: "2025-01",
     highlights: [
       "LangGraph agent translates natural language questions into SQL queries over live PostgreSQL data",

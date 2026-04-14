@@ -1,4 +1,4 @@
-export type ProjectStatus = "completed" | "in-progress" | "archived";
+export type ProjectStatus = "completed" | "in-progress" | "archived" | "online";
 
 export interface Project {
   /** Unique slug used in URLs, e.g. "rag-pipeline" */
