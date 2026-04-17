@@ -4,7 +4,6 @@ const skillCategories = [
     skills: [
       "LangGraph",
       "LangChain",
-      "PyTorch",
       "TensorFlow",
       "OpenAI APIs",
       "HuggingFace",
@@ -12,25 +11,29 @@ const skillCategories = [
       "GraphRAG",
       "RLHF",
       "PEFT / LoRA / QLoRA",
+      "Multi-Agent Systems",
+      "Prompt Engineering",
+      "DSPy",
       "Computer Vision",
       "NLP",
       "CNN",
       "RNN",
       "CRNN",
       "YOLO",
+      "PyTorch",
     ],
   },
   {
     label: "Languages",
-    skills: ["Python", "C++", "SQL", "Gremlin"],
+    skills: ["Python", "SQL", "Gremlin", "FastAPI", "C++"],
   },
   {
     label: "Cloud & Infrastructure",
-    skills: ["AWS (EC2, S3, VPC)", "Azure", "Docker", "Kubernetes", "DevOps"],
+    skills: ["Azure", "Azure Databricks", "Docker", "Kubernetes", "DevOps", "AWS (EC2, S3, VPC)"],
   },
   {
     label: "Databases",
-    skills: ["PostgreSQL", "MongoDB", "CosmosDB", "Neo4j", "MySQL"],
+    skills: ["PostgreSQL", "MongoDB", "CosmosDB", "Neo4j", "Redis", "MySQL"],
   },
 ];
 
