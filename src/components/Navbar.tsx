@@ -32,6 +32,12 @@ export default function Navbar() {
               Experience
             </a>
             <a
+              href="#certifications"
+              className="hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
+            >
+              Certifications
+            </a>
+            <a
               href="#contact"
               className="hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
             >
