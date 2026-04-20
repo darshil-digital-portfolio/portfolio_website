@@ -59,9 +59,6 @@ export default function Contact() {
         <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mb-4">
           Contact
         </h2>
-        <p className="text-slate-600 dark:text-slate-400 mb-10">
-          Open to full-time AI engineering roles in India.
-        </p>
         <div className="flex flex-wrap gap-4">
           {links.map((link) => (
             <a
@@ -69,13 +66,10 @@ export default function Contact() {
               href={link.href}
               target={link.href.startsWith("mailto") ? undefined : "_blank"}
               rel={link.href.startsWith("mailto") ? undefined : "noopener noreferrer"}
-              className="group flex items-center gap-3 px-5 py-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400"
+              className="flex items-center justify-center w-12 h-12 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400"
               aria-label={link.label}
             >
               {link.icon}
-              <span className="text-sm font-medium text-slate-700 dark:text-slate-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                {link.value}
-              </span>
             </a>
           ))}
         </div>
