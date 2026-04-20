@@ -46,5 +46,3 @@ next-env.d.ts
 # IBM specific resume
 public/IBM_resume.pdf
 
-# resume creation
-src/app/resume/

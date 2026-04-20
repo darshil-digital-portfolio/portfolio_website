@@ -4,6 +4,7 @@ export interface Certification {
   issuer: string;
   issuedDate: string;
   imageUrl: string;
+  url?: string;
   featured: boolean;
 }
 
@@ -39,30 +40,30 @@ export const certifications: Certification[] = [
     featured: true,
   },
   {
-    id: "gcp-deploy-evaluate-model-garden",
-    name: "Deploy and Evaluate Model Garden Models",
-    issuer: "Google Cloud",
-    issuedDate: "2025-11",
-    imageUrl:
-      "https://images.credly.com/images/b8828c64-a038-469c-9347-b961fb0fe505/blob",
+    id: "deep-learning-specialization",
+    name: "Deep Learning Specialization",
+    issuer: "DeepLearning.AI",
+    issuedDate: "2020-09",
+    imageUrl: "/certs/deeplearning-ai.png",
+    url: "http://coursera.org/verify/specialization/72MP2AL67VKB",
     featured: true,
   },
   {
-    id: "gcp-deploy-agent-adk",
-    name: "Deploy an Agent with Agent Development Kit (ADK)",
-    issuer: "Google Cloud",
-    issuedDate: "2025-10",
-    imageUrl:
-      "https://images.credly.com/images/e9c45e2a-a48e-4686-99df-7de0ccd6dae7/blob",
+    id: "genai-with-llms",
+    name: "Generative AI with Large Language Models",
+    issuer: "DeepLearning.AI",
+    issuedDate: "2024-01",
+    imageUrl: "/certs/deeplearning-ai.png",
+    url: "https://coursera.org/verify/Z96FB53LBHL8",
     featured: true,
   },
   {
-    id: "gcp-rag-firestore",
-    name: "Deploy a RAG Application with Vector Search in Firestore",
-    issuer: "Google Cloud",
-    issuedDate: "2025-10",
-    imageUrl:
-      "https://images.credly.com/images/7a5cf6ef-6f98-4752-b299-45e373c29bf4/blob",
+    id: "databricks-single-agent-apps",
+    name: "Building Single-Agent Applications on Databricks",
+    issuer: "Databricks",
+    issuedDate: "2026-04",
+    imageUrl: "/certs/databricks.png",
+    url: "https://credentials.databricks.com/68d6a2b9-d699-4179-9c34-63095b159baa",
     featured: true,
   },
 ];

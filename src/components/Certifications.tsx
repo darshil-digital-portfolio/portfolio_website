@@ -38,7 +38,7 @@ export default function Certifications() {
           {certs.map((cert) => (
             <a
               key={cert.id}
-              href={CREDLY_PROFILE_URL}
+              href={cert.url ?? CREDLY_PROFILE_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="group flex items-start gap-4 p-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-all"
