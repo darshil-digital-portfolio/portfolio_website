@@ -43,7 +43,7 @@ export default function Navbar() {
             aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
             className="p-2 rounded-md text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
           >
-            {theme === "light" ? (
+            {theme === "dark" ? (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="18"
