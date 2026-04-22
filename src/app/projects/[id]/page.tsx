@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getAllProjectCards } from "@/data/projectCards";
 import type { ProjectCard } from "@/types/project";
+import MermaidDiagram from "@/components/MermaidDiagram";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -113,6 +114,30 @@ export default async function ProjectPage({ params }: Props) {
           ))}
         </div>
       </div>
+      {project.metrics && project.metrics.length > 0 && (
+        <div className="mb-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {project.metrics.map((m) => (
+            <div
+              key={m.label}
+              className="rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-4 py-3 text-sm text-slate-700 dark:text-slate-300"
+            >
+              {m.label}
+            </div>
+          ))}
+        </div>
+      )}
+      {project.diagrams && project.diagrams.length > 0 && (
+        <div className="mb-8 space-y-6">
+          <h2 className="text-sm font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500">
+            Architecture
+          </h2>
+          {project.diagrams.map((d) =>
+            d.format === "mermaid" && d.content ? (
+              <MermaidDiagram key={d.title} title={d.title} content={d.content} />
+            ) : null,
+          )}
+        </div>
+      )}
       <div className="flex gap-4">
         {project.links.github && (
           <a
