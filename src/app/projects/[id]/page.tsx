@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { getAllProjectCards } from "@/data/projectCards";
 import type { ProjectCard } from "@/types/project";
 import MermaidDiagram from "@/components/MermaidDiagram";
@@ -81,6 +82,18 @@ export default async function ProjectPage({ params }: Props) {
         <StatusBadge status={project.status} />
       </div>
       <p className="text-sm text-slate-400 dark:text-slate-500 mb-6">{project.date}</p>
+      {project.thumbnail && (
+        <div className="relative w-full h-64 rounded-xl overflow-hidden mb-8 border border-slate-200 dark:border-slate-700">
+          <Image
+            src={project.thumbnail}
+            alt={`${project.title} screenshot`}
+            fill
+            className="object-cover object-top"
+            sizes="768px"
+            unoptimized
+          />
+        </div>
+      )}
       <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-8">
         {project.long_description ?? project.description}
       </p>
@@ -134,7 +147,7 @@ export default async function ProjectPage({ params }: Props) {
           {project.diagrams.map((d) =>
             d.format === "mermaid" && d.content ? (
               <MermaidDiagram key={d.title} title={d.title} content={d.content} />
-            ) : null,
+            ) : null
           )}
         </div>
       )}
