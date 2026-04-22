@@ -78,7 +78,6 @@ const resumeSections: ResumeSection[] = [
   },
 ];
 
-// Client names kept for reference — not rendered in project headings (NDA contracts)
 export const clientCompanies = [
   "PepsiCo",
   "MetLife",
@@ -131,7 +130,6 @@ export default function ResumePage() {
     >
       <style>{`
         @media print {
-          /* margin:0 removes the browser-injected title/URL headers & footers */
           @page { margin: 0; size: A4; }
           html, body { margin: 0; padding: 0; background: white; }
           .resume-card { box-shadow: none !important; width: 210mm !important; height: 297mm !important; overflow: hidden !important; }
@@ -311,11 +309,10 @@ export default function ResumePage() {
                 All badges & certifications: {CREDLY_PROFILE_URL}
               </p>
             </section>
-
           </main>
         </div>
 
-        {/* Footer accent — always at the very bottom */}
+        {/* Footer accent */}
         <div
           className="h-1.5 shrink-0"
           style={{

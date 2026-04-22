@@ -5,28 +5,25 @@ interface ProjectCardProps {
   project: Project;
 }
 
+const STATUS_CONFIG: Record<
+  Project["status"],
+  { label: string; className: string; pulse?: boolean }
+> = {
+  online:      { label: "Live",         className: "bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400",     pulse: true },
+  offline:     { label: "Offline",      className: "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400" },
+  "in-progress": { label: "In Progress", className: "bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400" },
+  completed:   { label: "Completed",    className: "bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400" },
+  confidential: { label: "Confidential", className: "bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400" },
+  archived:    { label: "Archived",     className: "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400" },
+  error:       { label: "Error",        className: "bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400" },
+};
+
 function StatusBadge({ status }: { status: Project["status"] }) {
-  if (status === "online") {
-    return (
-      <span className="shrink-0 flex items-center gap-1.5 px-2 py-0.5 text-xs rounded-full font-medium bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400">
-        <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-        Online
-      </span>
-    );
-  }
-  const map: Record<Exclude<Project["status"], "online">, string> = {
-    completed: "bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400",
-    "in-progress": "bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400",
-    archived: "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400",
-  };
-  const label: Record<Exclude<Project["status"], "online">, string> = {
-    completed: "Completed",
-    "in-progress": "In Progress",
-    archived: "Archived",
-  };
+  const { label, className, pulse } = STATUS_CONFIG[status];
   return (
-    <span className={`shrink-0 px-2 py-0.5 text-xs rounded-full font-medium ${map[status]}`}>
-      {label[status]}
+    <span className={`shrink-0 flex items-center gap-1.5 px-2 py-0.5 text-xs rounded-full font-medium ${className}`}>
+      {pulse && <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />}
+      {label}
     </span>
   );
 }
