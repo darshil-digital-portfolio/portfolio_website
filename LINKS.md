@@ -18,4 +18,4 @@ Fill in the values below, then tell Claude Code to update the site.
 
 ## Project: icc-rankings
 - GitHub URL: https://github.com/k-darshil/icc-rankings
-- Live demo URL: (not yet deployed)
+- Live demo URL: https://icc-rankings.darshil-ai.com
