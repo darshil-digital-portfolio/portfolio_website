@@ -3,7 +3,6 @@ import type { ProjectCard } from "@/types/project";
 const PROJECT_SLUGS: string[] = ["icc-rankings"];
 
 const S3_BASE =
-  process.env.NEXT_PUBLIC_S3_BASE_URL ??
   "https://project-cards-for-portfolio.s3.ap-south-1.amazonaws.com";
 
 async function fetchCard(slug: string): Promise<ProjectCard | null> {
