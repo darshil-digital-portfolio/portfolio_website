@@ -13,7 +13,7 @@ const GITHUB_RAW_BASE = "https://raw.githubusercontent.com";
 const PROJECT_REPOS: string[] = ["icc-rankings"];
 
 function rawUrl(repo: string): string {
-  return `${GITHUB_RAW_BASE}/${GITHUB_ORG}/${repo}/main/project_card.json`;
+  return `${GITHUB_RAW_BASE}/${GITHUB_ORG}/${repo}/HEAD/project_card.json`;
 }
 
 function readCachedCard(repo: string): ProjectCard | null {
@@ -29,7 +29,7 @@ function resolveCard(card: ProjectCard, repo: string): ProjectCard {
   if (card.thumbnail && !card.thumbnail.startsWith("http")) {
     return {
       ...card,
-      thumbnail: `${GITHUB_RAW_BASE}/${GITHUB_ORG}/${repo}/main/${card.thumbnail}`,
+      thumbnail: `${GITHUB_RAW_BASE}/${GITHUB_ORG}/${repo}/HEAD/${card.thumbnail}`,
     };
   }
   return card;
