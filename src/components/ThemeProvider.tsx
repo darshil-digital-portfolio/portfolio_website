@@ -15,25 +15,13 @@ const ThemeContext = createContext<ThemeContextValue>({
 });
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  // SSR-safe: on the server yields "light"; on the client reads the class the
-  // blocking inline script already applied, so there's no post-mount setState.
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof document === "undefined") return "light";
-    return document.documentElement.classList.contains("dark") ? "dark" : "light";
-  });
+  // Start with "light" for SSR; sync to actual DOM state after hydration.
+  const [theme, setTheme] = useState<Theme>("light");
 
-  // Keep the state in sync if the OS preference changes while the tab is open.
   useEffect(() => {
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    const handler = (e: MediaQueryListEvent) => {
-      if (!localStorage.getItem("theme")) {
-        const next: Theme = e.matches ? "dark" : "light";
-        document.documentElement.classList.toggle("dark", e.matches);
-        setTheme(next);
-      }
-    };
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
+    // Sync React state with what the blocking inline script already applied.
+    const actual: Theme = document.documentElement.classList.contains("dark") ? "dark" : "light";
+    setTheme(actual);
   }, []);
 
   const toggle = () => {
