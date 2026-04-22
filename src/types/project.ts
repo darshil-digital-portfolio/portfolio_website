@@ -1,11 +1,11 @@
 export type ProjectStatus =
-  | "online"       // deployed and live — visitor can interact right now
-  | "offline"      // exists but server stopped (e.g. cost saving); code is public
-  | "in-progress"  // actively being built
-  | "completed"    // built and done; no live deployment
+  | "online" // deployed and live — visitor can interact right now
+  | "offline" // exists but server stopped (e.g. cost saving); code is public
+  | "in-progress" // actively being built
+  | "completed" // built and done; no live deployment
   | "confidential" // company/NDA project; limited details shown
-  | "archived"     // no longer maintained
-  | "error";       // deployment broken — honest signal
+  | "archived" // no longer maintained
+  | "error"; // deployment broken — honest signal
 
 export type ProjectCategory =
   | "AI Agent"

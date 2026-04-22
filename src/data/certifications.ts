@@ -26,8 +26,7 @@ export const certifications: Certification[] = [
     name: "AWS Partner: Agentic AI Essentials",
     issuer: "Amazon Web Services",
     issuedDate: "2025-11",
-    imageUrl:
-      "https://images.credly.com/images/cb620644-88e4-4ee7-83a2-d33a6181e4b8/blob",
+    imageUrl: "https://images.credly.com/images/cb620644-88e4-4ee7-83a2-d33a6181e4b8/blob",
     featured: true,
   },
   {
@@ -35,8 +34,7 @@ export const certifications: Certification[] = [
     name: "AWS Partner: Generative AI Essentials",
     issuer: "Amazon Web Services",
     issuedDate: "2025-10",
-    imageUrl:
-      "https://images.credly.com/images/4b547104-5ce9-43d5-8708-a7abb4b0c7ec/blob",
+    imageUrl: "https://images.credly.com/images/4b547104-5ce9-43d5-8708-a7abb4b0c7ec/blob",
     featured: true,
   },
   {

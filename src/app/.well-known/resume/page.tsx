@@ -40,9 +40,17 @@ const resumeSections: ResumeSection[] = [
       { name: "Diffusion", examples: ["Stable Diffusion", "DALL-E"] },
     ],
     flat: [
-      "LangChain", "LangGraph", "RAG", "GraphRAG",
-      "RLHF", "PEFT / LoRA / QLoRA", "Fine-tuning", "Multi-Agent Systems",
-      "Prompt Engineering", "DSPy", "Vector DB",
+      "LangChain",
+      "LangGraph",
+      "RAG",
+      "GraphRAG",
+      "RLHF",
+      "PEFT / LoRA / QLoRA",
+      "Fine-tuning",
+      "Multi-Agent Systems",
+      "Prompt Engineering",
+      "DSPy",
+      "Vector DB",
     ],
   },
   {
@@ -56,7 +64,10 @@ const resumeSections: ResumeSection[] = [
       { name: "Graph NNs", examples: ["GCN", "GraphSAGE"] },
       { name: "Reinforcement Learning", examples: ["PPO", "DQN", "A3C"] },
       { name: "Distillation", examples: ["DistilBERT", "TinyBERT"] },
-      { name: "Traditional ML", examples: ["XGBoost", "LightGBM", "SVM", "k-NN", "PCA", "K-Means"] },
+      {
+        name: "Traditional ML",
+        examples: ["XGBoost", "LightGBM", "SVM", "k-NN", "PCA", "K-Means"],
+      },
     ],
     flat: ["TensorFlow", "PyTorch", "Transfer Learning", "MLflow"],
   },
@@ -65,15 +76,31 @@ const resumeSections: ResumeSection[] = [
     flat: ["Text Classification", "NER", "Hugging Face", "StarCoder", "CodeLLaMA", "Watson STT"],
   },
   { label: "Languages", flat: ["Python", "C++", "SQL", "Gremlin", "Cypher"] },
-  { label: "Python Ecosystem", flat: ["FastAPI", "Pandas", "scikit-learn", "OpenCV", "NetworkX", "Bokeh"] },
-  { label: "Databases", flat: ["PostgreSQL", "MongoDB", "CosmosDB", "Neo4j", "Redis", "MySQL", "SQLite"] },
+  {
+    label: "Python Ecosystem",
+    flat: ["FastAPI", "Pandas", "scikit-learn", "OpenCV", "NetworkX", "Bokeh"],
+  },
+  {
+    label: "Databases",
+    flat: ["PostgreSQL", "MongoDB", "CosmosDB", "Neo4j", "Redis", "MySQL", "SQLite"],
+  },
   {
     label: "Cloud & DevOps",
     flat: [
-      "Azure ML", "Azure Databricks", "Azure AI Studio", "AKS",
-      "Azure AI Search", "Azure Form Recognizer", "Azure Functions",
+      "Azure ML",
+      "Azure Databricks",
+      "Azure AI Studio",
+      "AKS",
+      "Azure AI Search",
+      "Azure Form Recognizer",
+      "Azure Functions",
       "AWS (EC2 · S3 · EKS · SageMaker · Bedrock)",
-      "Docker", "Kubernetes", "Terraform", "Azure DevOps", "CI/CD", "OpenTelemetry",
+      "Docker",
+      "Kubernetes",
+      "Terraform",
+      "Azure DevOps",
+      "CI/CD",
+      "OpenTelemetry",
     ],
   },
 ];
@@ -252,12 +279,12 @@ export default function ResumePage() {
               </h2>
               <p className="font-body-res text-[11.5px] text-stone-700 leading-snug">
                 Data Scientist at IBM since August 2016, with core expertise in image processing,
-                NLP, and deep learning. Proficient in TensorFlow and Microsoft Azure. Hands-on
-                in Generative AI — fine-tuning LLMs (GPT-4o, LLaMA), prompt engineering,
-                multi-agent systems (LangGraph/LangChain), and RAG pipelines. Experienced in
-                distributed microservices, graph databases, and real-time WebSocket communication.
-                Led Data Scientist teams across multiple engagements; MLOps for model deployment
-                and lifecycle management. 2nd runner-up, Azure Insighthon 2.0 hackathon.
+                NLP, and deep learning. Proficient in TensorFlow and Microsoft Azure. Hands-on in
+                Generative AI — fine-tuning LLMs (GPT-4o, LLaMA), prompt engineering, multi-agent
+                systems (LangGraph/LangChain), and RAG pipelines. Experienced in distributed
+                microservices, graph databases, and real-time WebSocket communication. Led Data
+                Scientist teams across multiple engagements; MLOps for model deployment and
+                lifecycle management. 2nd runner-up, Azure Insighthon 2.0 hackathon.
               </p>
             </section>
 

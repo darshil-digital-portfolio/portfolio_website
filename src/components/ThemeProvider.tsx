@@ -15,14 +15,12 @@ const ThemeContext = createContext<ThemeContextValue>({
 });
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  // SSR-safe default; synced to the real DOM (set by blocking inline script) after mount.
-  const [theme, setTheme] = useState<Theme>("light");
-
-  // After hydration, align state with whatever the blocking script applied.
-  useEffect(() => {
-    const actual = document.documentElement.classList.contains("dark") ? "dark" : "light";
-    setTheme(actual);
-  }, []);
+  // SSR-safe: on the server yields "light"; on the client reads the class the
+  // blocking inline script already applied, so there's no post-mount setState.
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof document === "undefined") return "light";
+    return document.documentElement.classList.contains("dark") ? "dark" : "light";
+  });
 
   // Keep the state in sync if the OS preference changes while the tab is open.
   useEffect(() => {

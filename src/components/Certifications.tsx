@@ -15,10 +15,7 @@ export default function Certifications() {
   const certs = getFeaturedCertifications();
 
   return (
-    <section
-      id="certifications"
-      className="py-24 border-t border-slate-200 dark:border-slate-800"
-    >
+    <section id="certifications" className="py-24 border-t border-slate-200 dark:border-slate-800">
       <div className="max-w-5xl mx-auto px-6">
         <div className="flex items-baseline justify-between mb-12">
           <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
@@ -56,9 +53,7 @@ export default function Certifications() {
                 <p className="text-sm font-medium text-slate-900 dark:text-slate-100 leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                   {cert.name}
                 </p>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                  {cert.issuer}
-                </p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{cert.issuer}</p>
                 <p className="text-xs font-mono text-slate-400 dark:text-slate-500 mt-0.5">
                   {formatDate(cert.issuedDate)}
                 </p>

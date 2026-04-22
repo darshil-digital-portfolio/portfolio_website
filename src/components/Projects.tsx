@@ -1,8 +1,8 @@
-import { getAllProjects } from "@/data/projects";
+import { getAllProjectCards } from "@/data/projectCards";
 import ProjectCard from "./ProjectCard";
 
-export default function Projects() {
-  const projects = getAllProjects();
+export default async function Projects() {
+  const projects = await getAllProjectCards();
 
   return (
     <section id="projects" className="py-24 border-t border-slate-200 dark:border-slate-800">

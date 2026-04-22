@@ -82,7 +82,14 @@ const skillCategories: { label: string; skills: SkillItem[] }[] = [
         name: "Transformer Architecture",
         description:
           "Attention-based architecture that unified NLP and vision. Trained via self-supervised objectives before task-specific fine-tuning.",
-        subSkills: ["Self-Supervised Learning", "Masked LM", "Contrastive Learning", "Multi-Head Attention", "ViT", "CLIP"],
+        subSkills: [
+          "Self-Supervised Learning",
+          "Masked LM",
+          "Contrastive Learning",
+          "Multi-Head Attention",
+          "ViT",
+          "CLIP",
+        ],
       },
       {
         name: "Generative Adversarial Networks",
@@ -115,7 +122,16 @@ const skillCategories: { label: string; skills: SkillItem[] }[] = [
         subSkillGroups: [
           {
             label: "Supervised",
-            items: ["XGBoost", "LightGBM", "Random Forest", "AdaBoost", "SVM", "Decision Trees", "k-NN", "Logistic Regression"],
+            items: [
+              "XGBoost",
+              "LightGBM",
+              "Random Forest",
+              "AdaBoost",
+              "SVM",
+              "Decision Trees",
+              "k-NN",
+              "Logistic Regression",
+            ],
           },
           {
             label: "Unsupervised",
@@ -158,8 +174,17 @@ const skillCategories: { label: string; skills: SkillItem[] }[] = [
         description:
           "Hands-on experience with core AWS services for data engineering, ML workloads, and application infrastructure.",
         subSkills: [
-          "EC2", "S3", "RDS", "VPC", "DynamoDB",
-          "SageMaker", "Bedrock", "Lambda", "EKS", "Fargate", "IAM",
+          "EC2",
+          "S3",
+          "RDS",
+          "VPC",
+          "DynamoDB",
+          "SageMaker",
+          "Bedrock",
+          "Lambda",
+          "EKS",
+          "Fargate",
+          "IAM",
         ],
       },
       {
@@ -228,7 +253,7 @@ export default function About() {
           observer.disconnect();
         }
       },
-      { threshold: 0.2 },
+      { threshold: 0.2 }
     );
 
     observer.observe(el);
@@ -239,11 +264,14 @@ export default function About() {
     };
   }, []);
 
-  const toggle = (name: string) =>
-    setExpanded((prev) => (prev === name ? null : name));
+  const toggle = (name: string) => setExpanded((prev) => (prev === name ? null : name));
 
   return (
-    <section ref={sectionRef} id="about" className="py-24 border-t border-slate-200 dark:border-slate-800">
+    <section
+      ref={sectionRef}
+      id="about"
+      className="py-24 border-t border-slate-200 dark:border-slate-800"
+    >
       <div className="max-w-5xl mx-auto px-6">
         <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mb-8">
           About
@@ -263,10 +291,7 @@ export default function About() {
             const isFirstExpandableCat = cat.label === firstExpandableCategory?.label;
 
             return (
-              <div
-                key={cat.label}
-                ref={isFirstExpandableCat ? firstExpandableRef : undefined}
-              >
+              <div key={cat.label} ref={isFirstExpandableCat ? firstExpandableRef : undefined}>
                 <h3 className="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-3">
                   {cat.label}
                 </h3>

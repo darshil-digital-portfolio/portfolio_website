@@ -1,33 +1,58 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getAllProjects } from "@/data/projects";
-import type { Project } from "@/types/project";
+import { getAllProjectCards } from "@/data/projectCards";
+import type { ProjectCard } from "@/types/project";
 
 interface Props {
   params: Promise<{ id: string }>;
 }
 
-export function generateStaticParams() {
-  return getAllProjects().map((p) => ({ id: p.id }));
+export async function generateStaticParams() {
+  const cards = await getAllProjectCards();
+  return cards.map((c) => ({ id: c.id }));
 }
 
 const STATUS_CONFIG: Record<
-  Project["status"],
+  ProjectCard["status"],
   { label: string; className: string; pulse?: boolean }
 > = {
-  online:        { label: "Live",         className: "bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400",     pulse: true },
-  offline:       { label: "Offline",      className: "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400" },
-  "in-progress": { label: "In Progress",  className: "bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400" },
-  completed:     { label: "Completed",    className: "bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400" },
-  confidential:  { label: "Confidential", className: "bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400" },
-  archived:      { label: "Archived",     className: "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400" },
-  error:         { label: "Error",        className: "bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400" },
+  online: {
+    label: "Live",
+    className: "bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400",
+    pulse: true,
+  },
+  offline: {
+    label: "Offline",
+    className: "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400",
+  },
+  "in-progress": {
+    label: "In Progress",
+    className: "bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400",
+  },
+  completed: {
+    label: "Completed",
+    className: "bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400",
+  },
+  confidential: {
+    label: "Confidential",
+    className: "bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-400",
+  },
+  archived: {
+    label: "Archived",
+    className: "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400",
+  },
+  error: {
+    label: "Error",
+    className: "bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400",
+  },
 };
 
-function StatusBadge({ status }: { status: Project["status"] }) {
+function StatusBadge({ status }: { status: ProjectCard["status"] }) {
   const { label, className, pulse } = STATUS_CONFIG[status];
   return (
-    <span className={`shrink-0 flex items-center gap-1.5 px-2 py-0.5 text-xs rounded-full font-medium ${className}`}>
+    <span
+      className={`shrink-0 flex items-center gap-1.5 px-2 py-0.5 text-xs rounded-full font-medium ${className}`}
+    >
       {pulse && <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />}
       {label}
     </span>
@@ -36,7 +61,8 @@ function StatusBadge({ status }: { status: Project["status"] }) {
 
 export default async function ProjectPage({ params }: Props) {
   const { id } = await params;
-  const project = getAllProjects().find((p) => p.id === id);
+  const cards = await getAllProjectCards();
+  const project = cards.find((c) => c.id === id);
   if (!project) notFound();
 
   return (
@@ -55,7 +81,7 @@ export default async function ProjectPage({ params }: Props) {
       </div>
       <p className="text-sm text-slate-400 dark:text-slate-500 mb-6">{project.date}</p>
       <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-8">
-        {project.longDescription ?? project.description}
+        {project.long_description ?? project.description}
       </p>
       {project.highlights && project.highlights.length > 0 && (
         <div className="mb-8">
@@ -88,9 +114,9 @@ export default async function ProjectPage({ params }: Props) {
         </div>
       </div>
       <div className="flex gap-4">
-        {project.githubUrl && (
+        {project.links.github && (
           <a
-            href={project.githubUrl}
+            href={project.links.github}
             target="_blank"
             rel="noopener noreferrer"
             className="px-5 py-2.5 rounded-lg bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-sm font-medium hover:bg-slate-700 dark:hover:bg-slate-300 transition-colors"
@@ -98,9 +124,9 @@ export default async function ProjectPage({ params }: Props) {
             View on GitHub ↗
           </a>
         )}
-        {project.liveUrl && (
+        {project.links.live && (
           <a
-            href={project.liveUrl}
+            href={project.links.live}
             target="_blank"
             rel="noopener noreferrer"
             className="px-5 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
