@@ -27,69 +27,56 @@ const lato = Lato({
   variable: "--font-body",
 });
 
-const skills: Record<string, string[]> = {
-  "Generative AI": [
-    "GPT-4o",
-    "LLaMA 3.1/3.3",
-    "BERT",
-    "T5",
-    "LangChain",
-    "LangGraph",
-    "RAG",
-    "GraphRAG",
-    "Prompt Engineering",
-    "Fine-tuning",
-    "RLHF",
-    "PEFT / LoRA / QLoRA",
-    "DSPy",
-    "Vector DB",
-    "Multi-Agent Systems",
-    "Automated Prompt Generation",
-  ],
-  "ML & Deep Learning": [
-    "TensorFlow",
-    "PyTorch",
-    "CNN",
-    "ResNet",
-    "YOLO",
-    "R-CNN",
-    "Mask R-CNN",
-    "CRNN",
-    "RNN",
-    "LSTM",
-    "Transfer Learning",
-    "MLflow",
-  ],
-  NLP: [
-    "Text Classification",
-    "NER",
-    "Hugging Face",
-    "StarCoder",
-    "CodeLLaMA",
-    "Watson Speech-to-Text",
-    "Watson Visual Recognition",
-  ],
-  Languages: ["Python", "C++", "SQL", "Gremlin", "Cypher"],
-  "Python Ecosystem": ["FastAPI", "Pandas", "OpenCV", "NetworkX", "Bokeh"],
-  Databases: ["PostgreSQL", "MongoDB", "CosmosDB", "Neo4j", "Redis", "MySQL", "SQLite"],
-  "Cloud & DevOps": [
-    "Azure ML",
-    "Azure Databricks",
-    "Azure AI Studio",
-    "AKS",
-    "Azure AI Search",
-    "Azure Form Recognizer",
-    "Azure Functions",
-    "AWS (EC2 · S3 · EKS · Fargate · SageMaker · Bedrock)",
-    "Docker",
-    "Kubernetes",
-    "Terraform",
-    "Azure DevOps",
-    "CI/CD",
-    "OpenTelemetry",
-    "WebSockets",
-  ],
-};
+type ModelGroup = { name: string; examples: string[] };
+type ResumeSection = { label: string; groups?: ModelGroup[]; flat?: string[] };
+
+const resumeSections: ResumeSection[] = [
+  {
+    label: "Generative AI",
+    groups: [
+      { name: "Autoregressive", examples: ["OpenAI Models", "Claude", "LLaMA 3.3"] },
+      { name: "Encoder-only", examples: ["BERT", "RoBERTa"] },
+      { name: "Encoder-Decoder", examples: ["T5", "BART"] },
+      { name: "Diffusion", examples: ["Stable Diffusion", "DALL-E"] },
+    ],
+    flat: [
+      "LangChain", "LangGraph", "RAG", "GraphRAG",
+      "RLHF", "PEFT / LoRA / QLoRA", "Fine-tuning", "Multi-Agent Systems",
+      "Prompt Engineering", "DSPy", "Vector DB",
+    ],
+  },
+  {
+    label: "ML & Deep Learning",
+    groups: [
+      { name: "Object Detection", examples: ["YOLO", "R-CNN", "Mask R-CNN"] },
+      { name: "Convolutional", examples: ["CNN", "ResNet"] },
+      { name: "Sequential", examples: ["RNN", "LSTM", "CRNN"] },
+      { name: "Transformers", examples: ["Self-Supervised", "ViT", "CLIP"] },
+      { name: "GANs", examples: ["DCGAN", "StyleGAN"] },
+      { name: "Graph NNs", examples: ["GCN", "GraphSAGE"] },
+      { name: "Reinforcement Learning", examples: ["PPO", "DQN", "A3C"] },
+      { name: "Distillation", examples: ["DistilBERT", "TinyBERT"] },
+      { name: "Traditional ML", examples: ["XGBoost", "LightGBM", "SVM", "k-NN", "PCA", "K-Means"] },
+    ],
+    flat: ["TensorFlow", "PyTorch", "Transfer Learning", "MLflow"],
+  },
+  {
+    label: "NLP",
+    flat: ["Text Classification", "NER", "Hugging Face", "StarCoder", "CodeLLaMA", "Watson STT"],
+  },
+  { label: "Languages", flat: ["Python", "C++", "SQL", "Gremlin", "Cypher"] },
+  { label: "Python Ecosystem", flat: ["FastAPI", "Pandas", "scikit-learn", "OpenCV", "NetworkX", "Bokeh"] },
+  { label: "Databases", flat: ["PostgreSQL", "MongoDB", "CosmosDB", "Neo4j", "Redis", "MySQL", "SQLite"] },
+  {
+    label: "Cloud & DevOps",
+    flat: [
+      "Azure ML", "Azure Databricks", "Azure AI Studio", "AKS",
+      "Azure AI Search", "Azure Form Recognizer", "Azure Functions",
+      "AWS (EC2 · S3 · EKS · SageMaker · Bedrock)",
+      "Docker", "Kubernetes", "Terraform", "Azure DevOps", "CI/CD", "OpenTelemetry",
+    ],
+  },
+];
 
 // Client names kept for reference — not rendered in project headings (NDA contracts)
 export const clientCompanies = [
@@ -147,7 +134,7 @@ export default function ResumePage() {
           /* margin:0 removes the browser-injected title/URL headers & footers */
           @page { margin: 0; size: A4; }
           html, body { margin: 0; padding: 0; background: white; }
-          .resume-card { box-shadow: none !important; padding: 0.45in 0.5in; }
+          .resume-card { box-shadow: none !important; width: 210mm !important; height: 297mm !important; overflow: hidden !important; }
           .no-print { display: none !important; }
         }
         .font-display  { font-family: var(--font-display,  Georgia, serif); }
@@ -161,7 +148,7 @@ export default function ResumePage() {
       </div>
 
       {/* Resume card */}
-      <div className="resume-card max-w-[860px] mx-auto bg-white shadow-2xl">
+      <div className="resume-card w-[210mm] h-[297mm] overflow-hidden mx-auto bg-white shadow-2xl flex flex-col">
         {/* ── HEADER ── */}
         <header className="px-10 pt-4 pb-3 border-b-[3px] border-stone-900">
           <div className="flex items-end justify-between gap-6">
@@ -177,16 +164,16 @@ export default function ResumePage() {
             <div className="text-right font-mono-res text-[10px] text-stone-500 space-y-0.5 pb-1 shrink-0">
               <p>IBM · Since Aug 2016</p>
               <p>IIT Kharagpur · M.Tech 2016</p>
-              <p>darshilk.1992@gmail.com</p>
+              <p>darshil_kapadia@outlook.com</p>
               <p>darshil-ai.com</p>
             </div>
           </div>
         </header>
 
         {/* ── BODY ── */}
-        <div className="flex">
+        <div className="flex flex-1 min-h-0">
           {/* Sidebar */}
-          <aside className="w-[220px] shrink-0 bg-stone-50 border-r border-stone-200 px-5 py-3 space-y-3">
+          <aside className="w-[220px] shrink-0 bg-stone-50 border-r border-stone-200 px-5 py-3 space-y-3 overflow-hidden">
             {/* Education */}
             <section>
               <h2 className="font-mono-res text-[9px] tracking-[0.25em] uppercase text-orange-700 font-medium mb-2">
@@ -221,21 +208,37 @@ export default function ResumePage() {
                 Technical Skills
               </h2>
               <div className="space-y-2">
-                {Object.entries(skills).map(([category, items]) => (
-                  <div key={category}>
+                {resumeSections.map((sec) => (
+                  <div key={sec.label}>
                     <p className="font-body-res text-[8px] font-bold text-stone-900 uppercase tracking-wide mb-1">
-                      {category}
+                      {sec.label}
                     </p>
-                    <div className="flex flex-wrap gap-0.5">
-                      {items.map((s) => (
-                        <span
-                          key={s}
-                          className="font-mono-res text-[7.5px] bg-stone-200 text-stone-700 px-1 py-0.5 rounded-sm"
-                        >
-                          {s}
-                        </span>
-                      ))}
-                    </div>
+                    {sec.groups && (
+                      <div className="space-y-0.5 mb-1">
+                        {sec.groups.map((g) => (
+                          <div key={g.name} className="flex items-baseline gap-1 flex-wrap">
+                            <span className="font-mono-res text-[6.5px] bg-orange-100 text-orange-800 px-1 py-0.5 rounded-sm font-medium whitespace-nowrap">
+                              {g.name}
+                            </span>
+                            <span className="font-body-res text-[7px] text-stone-500 leading-tight">
+                              {g.examples.join(" · ")}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    {sec.flat && (
+                      <div className="flex flex-wrap gap-0.5">
+                        {sec.flat.map((s) => (
+                          <span
+                            key={s}
+                            className="font-mono-res text-[7.5px] bg-stone-200 text-stone-700 px-1 py-0.5 rounded-sm"
+                          >
+                            {s}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
@@ -243,7 +246,7 @@ export default function ResumePage() {
           </aside>
 
           {/* Main content */}
-          <main className="flex-1 px-8 py-3 space-y-3">
+          <main className="flex-1 px-8 py-3 flex flex-col gap-3 overflow-hidden">
             {/* About */}
             <section>
               <h2 className="font-mono-res text-[9px] tracking-[0.25em] uppercase text-orange-700 font-medium mb-2">
@@ -287,44 +290,40 @@ export default function ResumePage() {
               </div>
             </section>
 
+            {/* Certifications */}
+            <section className="mt-auto">
+              <h2 className="font-mono-res text-[9px] tracking-[0.25em] uppercase text-orange-700 font-medium mb-2">
+                Certifications
+              </h2>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
+                {certifications.map((cert) => (
+                  <div key={cert.id} className="pl-3 border-l-2 border-stone-200">
+                    <p className="font-body-res text-[9px] font-bold text-stone-800 leading-tight">
+                      {cert.name}
+                    </p>
+                    <p className="font-mono-res text-[7.5px] text-stone-500">
+                      {cert.issuer} · {cert.issuedDate}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <p className="font-mono-res text-[7.5px] text-stone-400 mt-2">
+                All badges & certifications: {CREDLY_PROFILE_URL}
+              </p>
+            </section>
+
           </main>
         </div>
 
-        {/* Certifications — full width, 3 cols × 2 rows */}
-        <section className="border-t border-stone-200 px-10 py-2">
-          <h2 className="font-mono-res text-[9px] tracking-[0.25em] uppercase text-orange-700 font-medium mb-2">
-            Certifications
-          </h2>
-          <div className="flex items-start gap-4">
-            <div className="grid grid-cols-3 gap-x-4 gap-y-1.5 flex-1">
-              {certifications.map((cert) => (
-                <div key={cert.id} className="pl-3 border-l-2 border-stone-200">
-                  <p className="font-body-res text-[9px] font-bold text-stone-800 leading-tight">
-                    {cert.name}
-                  </p>
-                  <p className="font-mono-res text-[7.5px] text-stone-500">
-                    {cert.issuer} · {cert.issuedDate}
-                  </p>
-                </div>
-              ))}
-            </div>
-            <a
-              href={CREDLY_PROFILE_URL}
-              className="no-print shrink-0 flex flex-col items-center gap-0.5 mt-0.5"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="12" fill="#E05C2E" />
-                <text x="12" y="16.5" textAnchor="middle" fill="white" fontSize="13" fontFamily="sans-serif" fontWeight="bold">C</text>
-              </svg>
-              <span className="font-mono-res text-[6.5px] text-stone-400 text-center leading-tight">
-                see other<br />badges
-              </span>
-            </a>
-          </div>
-        </section>
-
-        {/* Footer accent */}
-        <div className="h-1.5 bg-gradient-to-r from-orange-700 via-amber-500 to-orange-700" />
+        {/* Footer accent — always at the very bottom */}
+        <div
+          className="h-1.5 shrink-0"
+          style={{
+            background: "linear-gradient(to right, #b45309, #f59e0b, #b45309)",
+            WebkitPrintColorAdjust: "exact",
+            printColorAdjust: "exact",
+          }}
+        />
       </div>
     </div>
   );

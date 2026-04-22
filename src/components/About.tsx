@@ -2,10 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 
+type SubSkillGroup = { label: string; items: string[] };
+
 type ExpandableSkill = {
   name: string;
   description: string;
-  subSkills: string[];
+  subSkills?: string[];
+  subSkillGroups?: SubSkillGroup[];
 };
 
 type SkillItem = string | ExpandableSkill;
@@ -16,10 +19,30 @@ const skillCategories: { label: string; skills: SkillItem[] }[] = [
   {
     label: "Generative AI",
     skills: [
-      "GPT-4o",
-      "LLaMA 3.1/3.3",
-      "BERT",
-      "T5",
+      {
+        name: "Autoregressive Models",
+        description:
+          "Decoder-only transformers trained on next-token prediction. State of the art for open-ended generation, reasoning, and instruction following.",
+        subSkills: ["OpenAI Models", "Claude", "LLaMA 3.3", "LLaMA 3.1"],
+      },
+      {
+        name: "Encoder-only Models",
+        description:
+          "Bidirectional transformers that produce rich contextual embeddings. Best suited for classification, NER, and semantic similarity.",
+        subSkills: ["BERT", "RoBERTa", "DistilBERT"],
+      },
+      {
+        name: "Encoder-Decoder Models",
+        description:
+          "Seq2seq architecture mapping input sequences to output sequences. Used for summarisation, translation, and question answering.",
+        subSkills: ["T5", "BART", "mT5"],
+      },
+      {
+        name: "Diffusion Models",
+        description:
+          "Generative models that learn to reverse a noise process. State of the art for high-fidelity image and media synthesis.",
+        subSkills: ["Stable Diffusion", "DALL-E", "Imagen"],
+      },
       "LangGraph",
       "LangChain",
       "RAG",
@@ -37,16 +60,71 @@ const skillCategories: { label: string; skills: SkillItem[] }[] = [
   {
     label: "ML & Deep Learning",
     skills: [
+      {
+        name: "Object Detection",
+        description:
+          "Region-based and anchor-free detectors for localising and classifying objects in images. Applied in insurance claim assessment and industrial inspection.",
+        subSkills: ["YOLO", "R-CNN", "Faster R-CNN", "Mask R-CNN"],
+      },
+      {
+        name: "Convolutional Models",
+        description:
+          "Hierarchical spatial feature extractors. Backbone of most computer vision pipelines for classification and representation learning.",
+        subSkills: ["CNN", "ResNet", "VGG", "EfficientNet"],
+      },
+      {
+        name: "Sequential Models",
+        description:
+          "Recurrent architectures that model temporal and sequential dependencies. Applied in OCR, time-series analysis, and sequence labelling.",
+        subSkills: ["RNN", "LSTM", "CRNN", "GRU"],
+      },
+      {
+        name: "Transformer Architecture",
+        description:
+          "Attention-based architecture that unified NLP and vision. Trained via self-supervised objectives before task-specific fine-tuning.",
+        subSkills: ["Self-Supervised Learning", "Masked LM", "Contrastive Learning", "Multi-Head Attention", "ViT", "CLIP"],
+      },
+      {
+        name: "Generative Adversarial Networks",
+        description:
+          "Adversarial generator–discriminator framework for producing realistic synthetic data and high-quality image generation.",
+        subSkills: ["GAN", "DCGAN", "StyleGAN", "CycleGAN"],
+      },
+      {
+        name: "Graph Neural Networks",
+        description:
+          "Message-passing networks that learn on graph-structured data — knowledge graphs, recommendation systems, and molecular modelling.",
+        subSkills: ["GCN", "GraphSAGE", "GAT", "Graph Transformer"],
+      },
+      {
+        name: "Reinforcement Learning",
+        description:
+          "Policy optimisation through environment interaction. Underpins LLM alignment (RLHF) and sequential decision-making agents.",
+        subSkills: ["PPO", "DQN", "A3C"],
+      },
+      {
+        name: "Model Distillation",
+        description:
+          "Compressing large teacher models into faster, smaller student models while preserving accuracy — critical for production deployment.",
+        subSkills: ["Knowledge Distillation", "DistilBERT", "TinyBERT", "Quantisation"],
+      },
+      {
+        name: "Traditional ML",
+        description:
+          "Classical algorithms for structured and tabular data. Fast to train, interpretable, and often the right tool before reaching for deep learning.",
+        subSkillGroups: [
+          {
+            label: "Supervised",
+            items: ["XGBoost", "LightGBM", "Random Forest", "AdaBoost", "SVM", "Decision Trees", "k-NN", "Logistic Regression"],
+          },
+          {
+            label: "Unsupervised",
+            items: ["PCA", "K-Means", "DBSCAN", "t-SNE", "UMAP", "Isolation Forest"],
+          },
+        ],
+      },
       "TensorFlow",
       "PyTorch",
-      "CNN",
-      "RNN",
-      "CRNN",
-      "LSTM",
-      "YOLO",
-      "ResNet",
-      "R-CNN",
-      "Mask R-CNN",
       "Transfer Learning",
       "Computer Vision",
       "MLflow",
@@ -70,7 +148,7 @@ const skillCategories: { label: string; skills: SkillItem[] }[] = [
   },
   {
     label: "Python Ecosystem",
-    skills: ["FastAPI", "Pandas", "OpenCV", "NetworkX", "Bokeh"],
+    skills: ["FastAPI", "Pandas", "scikit-learn", "OpenCV", "NetworkX", "Bokeh"],
   },
   {
     label: "Cloud & Infrastructure",
@@ -80,17 +158,8 @@ const skillCategories: { label: string; skills: SkillItem[] }[] = [
         description:
           "Hands-on experience with core AWS services for data engineering, ML workloads, and application infrastructure.",
         subSkills: [
-          "EC2",
-          "S3",
-          "RDS",
-          "VPC",
-          "DynamoDB",
-          "SageMaker",
-          "Bedrock",
-          "Lambda",
-          "EKS",
-          "Fargate",
-          "IAM",
+          "EC2", "S3", "RDS", "VPC", "DynamoDB",
+          "SageMaker", "Bedrock", "Lambda", "EKS", "Fargate", "IAM",
         ],
       },
       {
@@ -123,6 +192,10 @@ const skillCategories: { label: string; skills: SkillItem[] }[] = [
   },
 ];
 
+// First expandable skill across all categories — used for the auto-hint animation
+const firstExpandableCategory = skillCategories.find((c) => c.skills.some(isExpandable));
+const firstExpandableName = firstExpandableCategory?.skills.find(isExpandable)?.name ?? null;
+
 function ExpandIcon({ open }: { open: boolean }) {
   return (
     <span
@@ -137,12 +210,12 @@ function ExpandIcon({ open }: { open: boolean }) {
 export default function About() {
   const [expanded, setExpanded] = useState<string | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
-  const awsRowRef = useRef<HTMLDivElement>(null);
+  const firstExpandableRef = useRef<HTMLDivElement>(null);
 
-  // Auto-play hint when section scrolls into view
+  // Auto-play hint on the very first expandable skill when it scrolls into view
   useEffect(() => {
-    const el = awsRowRef.current;
-    if (!el) return;
+    const el = firstExpandableRef.current;
+    if (!el || !firstExpandableName) return;
 
     let t1: ReturnType<typeof setTimeout>;
     let t2: ReturnType<typeof setTimeout>;
@@ -150,7 +223,7 @@ export default function About() {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          t1 = setTimeout(() => setExpanded("AWS"), 600);
+          t1 = setTimeout(() => setExpanded(firstExpandableName), 600);
           t2 = setTimeout(() => setExpanded(null), 2800);
           observer.disconnect();
         }
@@ -187,9 +260,13 @@ export default function About() {
         <div className="space-y-8">
           {skillCategories.map((cat) => {
             const expandableInCat = cat.skills.filter(isExpandable);
+            const isFirstExpandableCat = cat.label === firstExpandableCategory?.label;
 
             return (
-              <div key={cat.label} ref={cat.label === "Cloud & Infrastructure" ? awsRowRef : undefined}>
+              <div
+                key={cat.label}
+                ref={isFirstExpandableCat ? firstExpandableRef : undefined}
+              >
                 <h3 className="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-3">
                   {cat.label}
                 </h3>
@@ -229,7 +306,7 @@ export default function About() {
                   <div
                     key={skill.name}
                     className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                      expanded === skill.name ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
+                      expanded === skill.name ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
                     }`}
                   >
                     <div className="pt-3">
@@ -237,16 +314,38 @@ export default function About() {
                         <p className="text-sm text-slate-600 dark:text-slate-400 mb-3 leading-relaxed">
                           {skill.description}
                         </p>
-                        <div className="grid grid-cols-3 gap-1.5">
-                          {skill.subSkills.map((s) => (
-                            <span
-                              key={s}
-                              className="px-2 py-1 text-xs rounded-md bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 text-center"
-                            >
-                              {s}
-                            </span>
-                          ))}
-                        </div>
+                        {skill.subSkillGroups ? (
+                          <div className="space-y-2.5">
+                            {skill.subSkillGroups.map((group) => (
+                              <div key={group.label}>
+                                <p className="text-[10px] font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-500 mb-1.5">
+                                  {group.label}
+                                </p>
+                                <div className="grid grid-cols-3 gap-1.5">
+                                  {group.items.map((s) => (
+                                    <span
+                                      key={s}
+                                      className="px-2 py-1 text-xs rounded-md bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 text-center"
+                                    >
+                                      {s}
+                                    </span>
+                                  ))}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="grid grid-cols-3 gap-1.5">
+                            {skill.subSkills?.map((s) => (
+                              <span
+                                key={s}
+                                className="px-2 py-1 text-xs rounded-md bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 text-center"
+                              >
+                                {s}
+                              </span>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
