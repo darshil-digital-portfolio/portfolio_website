@@ -40,7 +40,12 @@ export default function DiagramTabs({ diagrams, featuredDiagram }: DiagramTabsPr
           ))}
         </div>
       )}
-      {active.format === "mermaid" && active.content ? (
+      {(active.format ?? "mermaid") === "svg" && active.content ? (
+        <div
+          dangerouslySetInnerHTML={{ __html: active.content }}
+          className="w-full overflow-x-auto"
+        />
+      ) : (active.format ?? "mermaid") === "mermaid" && active.content ? (
         <MermaidDiagram title={diagrams.length === 1 ? active.title : ""} content={active.content} />
       ) : active.format === "image" && active.url ? (
         <div className="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">

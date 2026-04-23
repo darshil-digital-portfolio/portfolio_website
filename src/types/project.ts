@@ -29,7 +29,8 @@ export type DiagramType =
   | "sequence"
   | "deployment"
   | "rag-pipeline"
-  | "mlops-pipeline";
+  | "mlops-pipeline"
+  | "state-machine";
 
 export type MetricIcon = "database" | "speed" | "layers" | "cpu" | "chart" | "code";
 
@@ -42,7 +43,7 @@ export interface ProjectMetric {
 export interface ProjectDiagram {
   type: DiagramType;
   title: string;
-  format: "mermaid" | "image";
+  format?: "mermaid" | "svg" | "image";
   content?: string;
   url?: string;
 }
