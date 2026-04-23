@@ -1,5 +1,5 @@
 import { getAllProjectCards } from "@/data/projectCards";
-import ProjectCard from "./ProjectCard";
+import ProjectsGrid from "./ProjectsGrid";
 
 export default async function Projects() {
   const projects = await getAllProjectCards();
@@ -13,11 +13,7 @@ export default async function Projects() {
         {projects.length === 0 ? (
           <p className="text-slate-500 dark:text-slate-400">No projects yet.</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {projects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
-          </div>
+          <ProjectsGrid projects={projects} />
         )}
       </div>
     </section>

@@ -1,7 +1,9 @@
+import { Suspense } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Projects from "@/components/Projects";
+import { ProjectsGridSkeleton } from "@/components/ProjectSkeleton";
 import Experience from "@/components/Experience";
 import Certifications from "@/components/Certifications";
 import Contact from "@/components/Contact";
@@ -13,7 +15,9 @@ export default function Home() {
       <main>
         <Hero />
         <About />
-        <Projects />
+        <Suspense fallback={<ProjectsGridSkeleton />}>
+          <Projects />
+        </Suspense>
         <Experience />
         <Certifications />
         <Contact />

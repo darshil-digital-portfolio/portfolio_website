@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
 import type { ProjectCard } from "@/types/project";
+import ThumbnailImage from "./ThumbnailImage";
 
 interface ProjectCardProps {
   project: ProjectCard;
@@ -18,6 +18,22 @@ const STATUS_CONFIG: Record<
   offline: {
     label: "Offline",
     className: "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400",
+  },
+  showcase: {
+    label: "Showcase",
+    className: "bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400",
+  },
+  prototype: {
+    label: "Prototype",
+    className: "bg-teal-100 dark:bg-teal-900/40 text-teal-700 dark:text-teal-400",
+  },
+  deprecated: {
+    label: "Deprecated",
+    className: "bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500",
+  },
+  sunset: {
+    label: "Sunset",
+    className: "bg-rose-50 dark:bg-rose-950/30 text-rose-500 dark:text-rose-400",
   },
   "in-progress": {
     label: "In Progress",
@@ -42,7 +58,7 @@ const STATUS_CONFIG: Record<
 };
 
 function StatusBadge({ status }: { status: ProjectCard["status"] }) {
-  const { label, className, pulse } = STATUS_CONFIG[status];
+  const { label, className, pulse } = STATUS_CONFIG[status] ?? STATUS_CONFIG.offline;
   return (
     <span
       className={`shrink-0 flex items-center gap-1.5 px-2 py-0.5 text-xs rounded-full font-medium ${className}`}
@@ -53,27 +69,58 @@ function StatusBadge({ status }: { status: ProjectCard["status"] }) {
   );
 }
 
+function formatDateRange(start: string, end?: string | null): string {
+  const fmt = (iso: string) => {
+    const [year, month] = iso.split("-");
+    return new Date(Number(year), Number(month) - 1).toLocaleDateString("en-US", {
+      month: "short",
+      year: "numeric",
+    });
+  };
+  if (!end) return `${fmt(start)} – Present`;
+  const [sy, sm] = start.split("-").map(Number);
+  const [ey, em] = end.split("-").map(Number);
+  const months = (ey - sy) * 12 + (em - sm);
+  const duration =
+    months < 12
+      ? `${months} month${months !== 1 ? "s" : ""}`
+      : months % 12 === 0
+        ? `${months / 12} yr${months / 12 !== 1 ? "s" : ""}`
+        : `${(months / 12).toFixed(1)} yrs`;
+  return `${fmt(start)} – ${fmt(end)} · ${duration}`;
+}
+
 export default function ProjectCard({ project }: ProjectCardProps) {
+  const dateDisplay = project.timeline?.started
+    ? formatDateRange(project.timeline.started, project.timeline.completed)
+    : project.date;
+
   return (
     <div className="flex flex-col rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 hover:border-blue-300 dark:hover:border-blue-700 transition-colors overflow-hidden">
       {project.thumbnail && (
-        <div className="relative w-full h-44 shrink-0">
-          <Image
+        <div className="relative w-full h-44 shrink-0 overflow-hidden">
+          <ThumbnailImage
             src={project.thumbnail}
             alt={`${project.title} screenshot`}
-            fill
-            className="object-cover object-top"
             sizes="(min-width: 768px) 50vw, 100vw"
-            unoptimized
+            className="object-cover object-top"
           />
         </div>
       )}
       <div className="flex flex-col flex-1 p-6">
-        <div className="flex items-start justify-between gap-4 mb-3">
+        <div className="flex items-start justify-between gap-4 mb-1.5">
           <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
             {project.title}
           </h3>
           <StatusBadge status={project.status} />
+        </div>
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-xs text-slate-400 dark:text-slate-500">{dateDisplay}</span>
+          {project.industry && (
+            <span className="px-2 py-0.5 text-xs rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-medium">
+              {project.industry}
+            </span>
+          )}
         </div>
         <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4">
           {project.description}
@@ -89,14 +136,18 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           </ul>
         )}
         <div className="flex flex-wrap gap-1.5 mb-5">
-          {project.tags.map((tag) => (
-            <span
-              key={tag}
-              className="px-2 py-0.5 text-xs rounded bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300"
-            >
-              {tag}
-            </span>
-          ))}
+          {project.tags.map((tag) => {
+            const colonIdx = tag.indexOf(":");
+            const display = colonIdx !== -1 ? tag.slice(colonIdx + 1) : tag;
+            return (
+              <span
+                key={tag}
+                className="px-2 py-0.5 text-xs rounded bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300"
+              >
+                {display}
+              </span>
+            );
+          })}
         </div>
         <div className="mt-auto flex items-center gap-3 text-sm">
           <Link

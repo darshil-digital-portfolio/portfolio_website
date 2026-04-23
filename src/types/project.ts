@@ -1,8 +1,12 @@
 export type ProjectStatus =
   | "online" // deployed and live — visitor can interact right now
   | "offline" // exists but server stopped (e.g. cost saving); code is public
-  | "in-progress" // actively being built
-  | "completed" // built and done; no live deployment
+  | "showcase" // live demo / video exists; primary CTA is demo_video link
+  | "prototype" // early proof-of-concept; rough edges expected
+  | "deprecated" // superseded by a newer project
+  | "sunset" // permanently shut down
+  | "in-progress" // v1.0 compat — map same as offline with "In Progress" label
+  | "completed" // v1.0 compat — map same as offline
   | "confidential" // company/NDA project; limited details shown
   | "archived" // no longer maintained
   | "error"; // deployment broken — honest signal
@@ -23,12 +27,15 @@ export type DiagramType =
   | "system-architecture"
   | "er-diagram"
   | "sequence"
-  | "deployment";
+  | "deployment"
+  | "rag-pipeline"
+  | "mlops-pipeline";
 
 export type MetricIcon = "database" | "speed" | "layers" | "cpu" | "chart" | "code";
 
 export interface ProjectMetric {
   label: string;
+  value?: string;
   icon: MetricIcon;
 }
 
@@ -36,13 +43,52 @@ export interface ProjectDiagram {
   type: DiagramType;
   title: string;
   format: "mermaid" | "image";
-  /** Mermaid source when format === "mermaid" */
   content?: string;
-  /** Relative path or URL when format === "image" */
   url?: string;
 }
 
-/** Schema written by the /make-project-card skill and fetched from GitHub raw at build time */
+export interface Milestone {
+  date: string;
+  label: string;
+}
+
+export interface TimelineEntry {
+  started: string; // ISO YYYY-MM
+  completed?: string | null; // null = "Present"
+  milestones?: Milestone[];
+}
+
+/** Tag prefix → display group name */
+export type TagGroup =
+  | "AI / LLM"
+  | "MLOps"
+  | "Infrastructure"
+  | "Auth"
+  | "Compliance"
+  | "Other";
+
+/** Splits "rag:pgvector" → { prefix: "rag", value: "pgvector" }, "Python" → { prefix: null, value: "Python" } */
+export function parseTag(tag: string): { prefix: string | null; value: string } {
+  const idx = tag.indexOf(":");
+  if (idx === -1) return { prefix: null, value: tag };
+  return { prefix: tag.slice(0, idx), value: tag.slice(idx + 1) };
+}
+
+/** Maps tag prefix to its display group */
+export const TAG_PREFIX_TO_GROUP: Record<string, TagGroup> = {
+  llm: "AI / LLM",
+  embed: "AI / LLM",
+  finetune: "AI / LLM",
+  rag: "AI / LLM",
+  tracking: "MLOps",
+  serving: "MLOps",
+  observe: "MLOps",
+  infra: "Infrastructure",
+  auth: "Auth",
+  compliance: "Compliance",
+};
+
+/** Schema written by the /make-project-card skill and fetched from S3 at build time */
 export interface ProjectCard {
   schema_version: string;
   id: string;
@@ -64,27 +110,26 @@ export interface ProjectCard {
   };
   thumbnail?: string | null;
   last_updated: string;
+  // v2.0 fields
+  industry?: string | null;
+  timeline?: TimelineEntry | null;
+  architecture_notes?: string | null;
+  featured_diagram?: string | null;
+  part_of?: string | null;
 }
 
 /** Legacy interface — kept for fallback entries in src/data/projects.ts */
 export interface Project {
-  /** Unique slug used in URLs, e.g. "rag-pipeline" */
   id: string;
   title: string;
-  /** One-line teaser shown on the card */
   description: string;
-  /** Full markdown-friendly description shown on detail view */
   longDescription?: string;
-  /** Tech/domain tags, e.g. ["LLM", "RAG", "Python"] */
   tags: string[];
   githubUrl?: string;
   liveUrl?: string;
-  /** Path under /public or an absolute URL */
   imageUrl?: string;
   featured: boolean;
   status: ProjectStatus;
-  /** Month of completion/start — ISO format YYYY-MM */
   date: string;
-  /** 2-4 bullet points of key achievements */
   highlights?: string[];
 }

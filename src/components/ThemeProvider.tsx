@@ -21,6 +21,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Sync React state with what the blocking inline script already applied.
     const actual: Theme = document.documentElement.classList.contains("dark") ? "dark" : "light";
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTheme(actual);
   }, []);
 
