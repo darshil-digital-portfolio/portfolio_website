@@ -43,7 +43,7 @@ export default function DiagramTabs({ diagrams, featuredDiagram }: DiagramTabsPr
       {(active.format ?? "mermaid") === "svg" && active.content ? (
         <div
           dangerouslySetInnerHTML={{ __html: active.content }}
-          className="w-full overflow-x-auto"
+          className="w-full overflow-x-auto [&>svg]:w-full [&>svg]:h-auto [&>svg]:max-w-full"
         />
       ) : (active.format ?? "mermaid") === "mermaid" && active.content ? (
         <MermaidDiagram title={diagrams.length === 1 ? active.title : ""} content={active.content} />

@@ -46,3 +46,6 @@ next-env.d.ts
 # IBM specific resume
 public/IBM_resume.pdf
 
+# playwright logs
+.playwright-mcp/
+

@@ -13,6 +13,15 @@ export const CREDLY_TOTAL_COUNT = 17;
 
 export const certifications: Certification[] = [
   {
+    id: "databricks-genai-engineer-associate",
+    name: "Databricks Certified Generative AI Engineer Associate",
+    issuer: "Databricks",
+    issuedDate: "2026-05",
+    imageUrl: "/certs/databricks.png",
+    url: "https://www.credential.net/f68bb5fe-a53d-4370-b78c-87623fb3c727",
+    featured: true,
+  },
+  {
     id: "ibm-gen-agentic-ai-expert",
     name: "IBM Generative & Agentic AI Expert — Data Scientist",
     issuer: "IBM",
@@ -53,15 +62,6 @@ export const certifications: Certification[] = [
     issuedDate: "2024-01",
     imageUrl: "/certs/deeplearning-ai.png",
     url: "https://coursera.org/verify/Z96FB53LBHL8",
-    featured: true,
-  },
-  {
-    id: "databricks-single-agent-apps",
-    name: "Building Single-Agent Applications on Databricks",
-    issuer: "Databricks",
-    issuedDate: "2026-04",
-    imageUrl: "/certs/databricks.png",
-    url: "https://credentials.databricks.com/68d6a2b9-d699-4179-9c34-63095b159baa",
     featured: true,
   },
 ];
