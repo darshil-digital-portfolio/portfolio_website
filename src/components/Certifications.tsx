@@ -31,16 +31,16 @@ export default function Certifications() {
           </a>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {certs.map((cert) => (
             <a
               key={cert.id}
               href={cert.url ?? CREDLY_PROFILE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col items-center gap-3 p-5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-all text-center"
+              className="group flex items-start gap-4 p-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-all"
             >
-              <div className="w-24 h-24 relative shrink-0">
+              <div className="shrink-0 w-20 h-20 relative">
                 <Image
                   src={cert.imageUrl}
                   alt={cert.name}
@@ -49,7 +49,7 @@ export default function Certifications() {
                   unoptimized
                 />
               </div>
-              <div className="min-w-0 w-full">
+              <div className="min-w-0">
                 <p className="text-sm font-medium text-slate-900 dark:text-slate-100 leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                   {cert.name}
                 </p>
