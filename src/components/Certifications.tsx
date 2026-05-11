@@ -40,7 +40,7 @@ export default function Certifications() {
               rel="noopener noreferrer"
               className="group flex items-start gap-4 p-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-all"
             >
-              <div className="shrink-0 w-24 h-24 relative">
+              <div className="shrink-0 w-20 h-20 relative">
                 <Image
                   src={cert.imageUrl}
                   alt={cert.name}
