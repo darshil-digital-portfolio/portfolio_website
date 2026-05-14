@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import WipBanner from "@/components/WipBanner";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
@@ -40,7 +39,6 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
-        <WipBanner />
         <ThemeProvider>{children}</ThemeProvider>
         <Analytics />
       </body>
