@@ -46,7 +46,10 @@ export default function DiagramTabs({ diagrams, featuredDiagram }: DiagramTabsPr
           className="w-full overflow-x-auto [&>svg]:w-full [&>svg]:h-auto [&>svg]:max-w-full"
         />
       ) : (active.format ?? "mermaid") === "mermaid" && active.content ? (
-        <MermaidDiagram title={diagrams.length === 1 ? active.title : ""} content={active.content} />
+        <MermaidDiagram
+          title={diagrams.length === 1 ? active.title : ""}
+          content={active.content}
+        />
       ) : active.format === "image" && active.url ? (
         <div className="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">
           {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -60,13 +60,7 @@ export interface TimelineEntry {
 }
 
 /** Tag prefix → display group name */
-export type TagGroup =
-  | "AI / LLM"
-  | "MLOps"
-  | "Infrastructure"
-  | "Auth"
-  | "Compliance"
-  | "Other";
+export type TagGroup = "AI / LLM" | "MLOps" | "Infrastructure" | "Auth" | "Compliance" | "Other";
 
 /** Splits "rag:pgvector" → { prefix: "rag", value: "pgvector" }, "Python" → { prefix: null, value: "Python" } */
 export function parseTag(tag: string): { prefix: string | null; value: string } {

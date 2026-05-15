@@ -1,9 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import { useTheme } from "./ThemeProvider";
+
+const NAV_LINKS = [
+  { href: "#about", label: "About" },
+  { href: "#projects", label: "Projects" },
+  { href: "#experience", label: "Experience" },
+  { href: "#certifications", label: "Certifications" },
+  { href: "#contact", label: "Contact" },
+];
 
 export default function Navbar() {
   const { theme, toggle } = useTheme();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-sm">
@@ -11,39 +21,20 @@ export default function Navbar() {
         <span className="text-lg font-bold tracking-tight text-slate-900 dark:text-slate-100">
           DK
         </span>
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-4">
+          {/* Desktop nav */}
           <div className="hidden sm:flex items-center gap-6 text-sm font-medium text-slate-600 dark:text-slate-400">
-            <a
-              href="#about"
-              className="hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
-            >
-              About
-            </a>
-            <a
-              href="#projects"
-              className="hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
-            >
-              Projects
-            </a>
-            <a
-              href="#experience"
-              className="hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
-            >
-              Experience
-            </a>
-            <a
-              href="#certifications"
-              className="hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
-            >
-              Certifications
-            </a>
-            <a
-              href="#contact"
-              className="hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
-            >
-              Contact
-            </a>
+            {NAV_LINKS.map(({ href, label }) => (
+              <a
+                key={href}
+                href={href}
+                className="hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
+              >
+                {label}
+              </a>
+            ))}
           </div>
+
           <button
             onClick={toggle}
             aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
@@ -87,8 +78,65 @@ export default function Navbar() {
               </svg>
             )}
           </button>
+
+          {/* Hamburger — mobile only */}
+          <button
+            className="sm:hidden p-2 rounded-md text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((v) => !v)}
+          >
+            {menuOpen ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            )}
+          </button>
         </div>
       </nav>
+
+      {/* Mobile dropdown */}
+      {menuOpen && (
+        <div className="sm:hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-sm px-6 py-4 flex flex-col gap-4">
+          {NAV_LINKS.map(({ href, label }) => (
+            <a
+              key={href}
+              href={href}
+              onClick={() => setMenuOpen(false)}
+              className="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
+            >
+              {label}
+            </a>
+          ))}
+        </div>
+      )}
     </header>
   );
 }

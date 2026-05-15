@@ -11,17 +11,12 @@ const s3 = new S3Client({
 
 const BUCKET = process.env.PORTFOLIO_S3_BUCKET_NAME ?? "project-cards-for-portfolio";
 
-export async function GET(
-  _req: NextRequest,
-  { params }: { params: Promise<{ key: string[] }> },
-) {
+export async function GET(_req: NextRequest, { params }: { params: Promise<{ key: string[] }> }) {
   const { key } = await params;
   const objectKey = key.join("/");
 
   try {
-    const res = await s3.send(
-      new GetObjectCommand({ Bucket: BUCKET, Key: objectKey }),
-    );
+    const res = await s3.send(new GetObjectCommand({ Bucket: BUCKET, Key: objectKey }));
     const body = await res.Body?.transformToByteArray();
     if (!body) return new NextResponse(null, { status: 404 });
 

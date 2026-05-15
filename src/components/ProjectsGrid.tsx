@@ -21,7 +21,8 @@ const TAG_GROUP_PREFIXES: Record<string, string[]> = {
 };
 
 function normalizeStatus(s: ProjectCard["status"]): string {
-  if (s === "completed" || s === "deprecated" || s === "sunset" || s === "archived") return "offline";
+  if (s === "completed" || s === "deprecated" || s === "sunset" || s === "archived")
+    return "offline";
   if (s === "in-progress") return "offline";
   return s;
 }
@@ -47,9 +48,14 @@ export default function ProjectsGrid({ projects }: Props) {
     return STATUS_FILTER_OPTIONS.filter((opt) =>
       projects.some((p) => {
         if (opt.value === "offline") {
-          return ["offline", "completed", "in-progress", "deprecated", "sunset", "archived"].includes(
-            p.status
-          );
+          return [
+            "offline",
+            "completed",
+            "in-progress",
+            "deprecated",
+            "sunset",
+            "archived",
+          ].includes(p.status);
         }
         return p.status === opt.value;
       })
@@ -59,7 +65,14 @@ export default function ProjectsGrid({ projects }: Props) {
   const presentTagGroups = useMemo(() => {
     const groups: string[] = [];
     for (const [group, prefixes] of Object.entries(TAG_GROUP_PREFIXES)) {
-      if (projects.some((p) => p.tags.some((t) => { const { prefix } = parseTag(t); return prefix && prefixes.includes(prefix); }))) {
+      if (
+        projects.some((p) =>
+          p.tags.some((t) => {
+            const { prefix } = parseTag(t);
+            return prefix && prefixes.includes(prefix);
+          })
+        )
+      ) {
         groups.push(group);
       }
     }
@@ -143,7 +156,9 @@ export default function ProjectsGrid({ projects }: Props) {
         </div>
       )}
       {filtered.length === 0 ? (
-        <p className="text-slate-500 dark:text-slate-400">No projects match the selected filters.</p>
+        <p className="text-slate-500 dark:text-slate-400">
+          No projects match the selected filters.
+        </p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {filtered.map((project) => (
