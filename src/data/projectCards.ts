@@ -1,7 +1,7 @@
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import type { ProjectCard } from "@/types/project";
 
-const PROJECT_SLUGS: string[] = ["icc-rankings"];
+const PROJECT_SLUGS: string[] = ["icc-rankings", "trendlink"];
 
 const s3 = new S3Client({
   region: process.env.PORTFOLIO_AWS_REGION ?? "ap-south-1",
@@ -31,6 +31,9 @@ async function fetchCard(slug: string): Promise<ProjectCard | null> {
     if (!body) throw new Error(`Empty body for ${slug}`);
     const card = JSON.parse(body) as ProjectCard;
     if (card.thumbnail) card.thumbnail = toApiUrl(card.thumbnail);
+    card.diagrams = card.diagrams?.map((d) =>
+      d.url ? { ...d, url: toApiUrl(d.url) } : d
+    );
     return card;
   } catch (err) {
     console.error(`[projectCards] failed to fetch ${slug}:`, err);

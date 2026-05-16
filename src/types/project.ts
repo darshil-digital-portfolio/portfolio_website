@@ -30,7 +30,9 @@ export type DiagramType =
   | "deployment"
   | "rag-pipeline"
   | "mlops-pipeline"
-  | "state-machine";
+  | "state-machine"
+  | "c4-context"
+  | "c4-container";
 
 export type MetricIcon = "database" | "speed" | "layers" | "cpu" | "chart" | "code";
 
@@ -43,7 +45,7 @@ export interface ProjectMetric {
 export interface ProjectDiagram {
   type: DiagramType;
   title: string;
-  format?: "mermaid" | "svg" | "image";
+  format?: "mermaid" | "svg" | "image" | "drawio";
   content?: string;
   url?: string;
 }

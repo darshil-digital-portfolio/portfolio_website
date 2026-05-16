@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { ProjectDiagram } from "@/types/project";
 import MermaidDiagram from "./MermaidDiagram";
+import DrawioDiagram from "./DrawioDiagram";
 
 interface DiagramTabsProps {
   diagrams: ProjectDiagram[];
@@ -55,6 +56,8 @@ export default function DiagramTabs({ diagrams, featuredDiagram }: DiagramTabsPr
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={active.url} alt={active.title} className="w-full" />
         </div>
+      ) : active.format === "drawio" && active.url ? (
+        <DrawioDiagram title={active.title} url={active.url} />
       ) : null}
     </div>
   );
