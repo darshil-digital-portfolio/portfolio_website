@@ -46,7 +46,7 @@ export async function getAllProjectCards(): Promise<ProjectCard[]> {
   const cards = results.filter((c): c is ProjectCard => c !== null);
   return cards.sort((a, b) => {
     if (a.featured !== b.featured) return a.featured ? -1 : 1;
-    return b.date.localeCompare(a.date);
+    return (b.date ?? "").localeCompare(a.date ?? "");
   });
 }
 
