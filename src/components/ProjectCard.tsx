@@ -96,7 +96,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     : project.date;
 
   return (
-    <div className="flex flex-col rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 hover:border-blue-300 dark:hover:border-blue-700 transition-colors overflow-hidden">
+    <div className="flex flex-col h-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 hover:border-blue-300 dark:hover:border-blue-700 transition-colors overflow-hidden">
       {project.thumbnail && (
         <div className="relative w-full h-44 shrink-0 overflow-hidden">
           <ThumbnailImage

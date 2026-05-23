@@ -42,6 +42,7 @@ const resumeSections: ResumeSection[] = [
     flat: [
       "LangChain",
       "LangGraph",
+      "OpenAI Agents SDK",
       "RAG",
       "GraphRAG",
       "RLHF",

@@ -45,6 +45,7 @@ const skillCategories: { label: string; skills: SkillItem[] }[] = [
       },
       "LangGraph",
       "LangChain",
+      "OpenAI Agents SDK",
       "RAG",
       "GraphRAG",
       "RLHF",
