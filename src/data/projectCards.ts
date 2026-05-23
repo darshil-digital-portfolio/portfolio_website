@@ -1,7 +1,7 @@
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import type { ProjectCard } from "@/types/project";
 
-const PROJECT_SLUGS: string[] = ["icc-rankings", "trendlink"];
+const PROJECT_SLUGS: string[] = ["icc-rankings", "trendlink", "deep-research-agent"];
 
 const s3 = new S3Client({
   region: process.env.PORTFOLIO_AWS_REGION ?? "ap-south-1",
