@@ -113,8 +113,9 @@ export default function ProjectsGrid({ projects }: Props) {
     left: false,
     right: false,
   });
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const updateEdgeState = useCallback(() => {
+  const updateScrollState = useCallback(() => {
     const el = scrollerRef.current;
     if (!el) return;
     const max = el.scrollWidth - el.clientWidth;
@@ -122,20 +123,49 @@ export default function ProjectsGrid({ projects }: Props) {
       left: el.scrollLeft > 4,
       right: max > 4 && el.scrollLeft < max - 4,
     });
-  }, []);
+    const first = el.firstElementChild as HTMLElement | null;
+    const step = (first?.clientWidth ?? 1) + 24;
+    setActiveIndex(Math.min(filtered.length - 1, Math.max(0, Math.round(el.scrollLeft / step))));
+  }, [filtered.length]);
 
   useEffect(() => {
-    updateEdgeState();
+    updateScrollState();
     const el = scrollerRef.current;
     if (!el) return;
-    el.addEventListener("scroll", updateEdgeState, { passive: true });
-    const ro = new ResizeObserver(updateEdgeState);
+    el.addEventListener("scroll", updateScrollState, { passive: true });
+    const ro = new ResizeObserver(updateScrollState);
     ro.observe(el);
     return () => {
-      el.removeEventListener("scroll", updateEdgeState);
+      el.removeEventListener("scroll", updateScrollState);
       ro.disconnect();
     };
-  }, [updateEdgeState, filtered.length]);
+  }, [updateScrollState, filtered.length]);
+
+  const hintedRef = useRef(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(min-width: 768px)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const el = scrollerRef.current;
+    if (!el || filtered.length < 2) return;
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting && !hintedRef.current && el.scrollLeft < 4) {
+            hintedRef.current = true;
+            window.setTimeout(() => {
+              el.scrollBy({ left: 56, behavior: "smooth" });
+              window.setTimeout(() => el.scrollBy({ left: -56, behavior: "smooth" }), 480);
+            }, 450);
+          }
+        }
+      },
+      { threshold: 0.35 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [filtered.length]);
 
   const scrollByCard = (dir: -1 | 1) => {
     const el = scrollerRef.current;
@@ -143,6 +173,14 @@ export default function ProjectsGrid({ projects }: Props) {
     const first = el.firstElementChild as HTMLElement | null;
     const step = (first?.clientWidth ?? 360) + 24;
     el.scrollBy({ left: dir * step, behavior: "smooth" });
+  };
+
+  const scrollToIndex = (i: number) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const first = el.firstElementChild as HTMLElement | null;
+    const step = (first?.clientWidth ?? 1) + 24;
+    el.scrollTo({ left: i * step, behavior: "smooth" });
   };
 
   const maskImage =
@@ -263,6 +301,24 @@ export default function ProjectsGrid({ projects }: Props) {
               <polyline points="9 18 15 12 9 6" />
             </svg>
           </button>
+          {filtered.length > 1 && (
+            <div className="md:hidden flex justify-center items-center gap-1.5 mt-5">
+              {filtered.map((p, i) => (
+                <button
+                  key={p.id}
+                  type="button"
+                  aria-label={`Go to project ${i + 1} of ${filtered.length}`}
+                  aria-current={activeIndex === i ? "true" : undefined}
+                  onClick={() => scrollToIndex(i)}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    activeIndex === i
+                      ? "w-6 bg-blue-500 dark:bg-blue-400"
+                      : "w-1.5 bg-slate-300 dark:bg-slate-700"
+                  }`}
+                />
+              ))}
+            </div>
+          )}
         </div>
       )}
     </>
