@@ -12,10 +12,9 @@ const nextConfig: NextConfig = {
   },
   images: {
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.credly.com",
-      },
+      { protocol: "https", hostname: "images.credly.com" },
+      { protocol: "https", hostname: "cdn-images-1.medium.com" },
+      { protocol: "https", hostname: "miro.medium.com" },
     ],
   },
 };
