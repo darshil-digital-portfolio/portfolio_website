@@ -47,3 +47,34 @@ export function ProjectsGridSkeleton() {
     </section>
   );
 }
+
+function ArticleCardSkeleton() {
+  return (
+    <div className="flex flex-col rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 overflow-hidden">
+      <Shimmer className="aspect-[16/9] w-full rounded-none" />
+      <div className="p-5 flex flex-col gap-3">
+        <Shimmer className="h-3 w-2/5" />
+        <Shimmer className="h-5 w-11/12" />
+        <Shimmer className="h-3 w-full" />
+        <Shimmer className="h-3 w-4/5" />
+        <div className="flex gap-1.5 pt-2">
+          <Shimmer className="h-4 w-12 rounded-full" />
+          <Shimmer className="h-4 w-14 rounded-full" />
+          <Shimmer className="h-4 w-10 rounded-full" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function ArticlesScrollerSkeleton() {
+  return (
+    <div className="flex gap-6 overflow-hidden py-2">
+      {[0, 1, 2].map((i) => (
+        <div key={i} className="w-[80vw] sm:w-[340px] lg:w-[380px] shrink-0">
+          <ArticleCardSkeleton />
+        </div>
+      ))}
+    </div>
+  );
+}
