@@ -3,7 +3,11 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Projects from "@/components/Projects";
-import { ProjectsGridSkeleton } from "@/components/ProjectSkeleton";
+import Articles from "@/components/Articles";
+import {
+  ProjectsGridSkeleton,
+  ArticlesScrollerSkeleton,
+} from "@/components/ProjectSkeleton";
 import Experience from "@/components/Experience";
 import Certifications from "@/components/Certifications";
 import Contact from "@/components/Contact";
@@ -17,6 +21,9 @@ export default function Home() {
         <About />
         <Suspense fallback={<ProjectsGridSkeleton />}>
           <Projects />
+        </Suspense>
+        <Suspense fallback={<ArticlesScrollerSkeleton />}>
+          <Articles />
         </Suspense>
         <Experience />
         <Certifications />
