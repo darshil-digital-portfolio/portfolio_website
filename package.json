@@ -12,6 +12,7 @@
     "@aws-sdk/client-s3": "^3.1045.0",
     "@aws-sdk/s3-request-presigner": "^3.1045.0",
     "@vercel/analytics": "^2.0.1",
+    "fast-xml-parser": "^5.8.0",
     "mermaid": "^11.14.0",
     "next": "16.2.3",
     "react": "19.2.4",
