@@ -12,7 +12,7 @@ const bodoni = Bodoni_Moda({
   subsets: ["latin"],
   weight: ["400", "700"],
   style: ["normal", "italic"],
-  variable: "--font-display",
+  variable: "--font-display-res",
 });
 
 const fira = Fira_Code({
@@ -24,7 +24,7 @@ const fira = Fira_Code({
 const lato = Lato({
   subsets: ["latin"],
   weight: ["300", "400", "700"],
-  variable: "--font-body",
+  variable: "--font-body-res",
 });
 
 type ModelGroup = { name: string; examples: string[] };
@@ -163,9 +163,9 @@ export default function ResumePage() {
           .resume-card { box-shadow: none !important; width: 210mm !important; height: 297mm !important; overflow: hidden !important; }
           .no-print { display: none !important; }
         }
-        .font-display  { font-family: var(--font-display,  Georgia, serif); }
+        .font-display-res { font-family: var(--font-display-res, Georgia, serif); }
         .font-mono-res { font-family: var(--font-mono-custom, monospace); }
-        .font-body-res { font-family: var(--font-body, sans-serif); }
+        .font-body-res { font-family: var(--font-body-res, sans-serif); }
       `}</style>
 
       {/* Floating print button */}
@@ -179,7 +179,7 @@ export default function ResumePage() {
         <header className="px-10 pt-4 pb-3 border-b-[3px] border-stone-900">
           <div className="flex items-end justify-between gap-6">
             <div>
-              <h1 className="font-display text-[42px] leading-[1] font-bold tracking-tight text-stone-900">
+              <h1 className="font-display-res text-[42px] leading-[1] font-bold tracking-tight text-stone-900">
                 Darshil
                 <span className="italic font-normal"> Kapadia</span>
               </h1>
@@ -298,7 +298,7 @@ export default function ResumePage() {
                 {experience.map((job) => (
                   <div key={job.project} className="relative pl-3 border-l-2 border-stone-200">
                     <div className="flex items-start justify-between gap-3 mb-0.5">
-                      <span className="font-display font-bold text-[14px] text-stone-900">
+                      <span className="font-display-res font-bold text-[14px] text-stone-900">
                         {job.project}
                       </span>
                       <span className="font-mono-res text-[9px] text-orange-700 whitespace-nowrap">
