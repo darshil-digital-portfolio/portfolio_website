@@ -1,36 +1,4 @@
-interface TimelineItem {
-  org: string;
-  role: string;
-  period: string;
-  type: "work" | "education";
-  bullets?: string[];
-}
-
-const timeline: TimelineItem[] = [
-  {
-    org: "IBM India",
-    role: "Data Scientist / AI Engineer",
-    period: "Aug 2016 – Present",
-    type: "work",
-    bullets: [
-      "Built end-to-end computer vision, NLP, and agentic AI solutions for global enterprise clients including PepsiCo, Bacardi, Dow Chemicals, JSW, FAA, NedBank, and Iffco-Tokio.",
-      "Fine-tuned large language models using PEFT techniques (LoRA, QLoRA) and aligned models with RLHF; deployed RAG and GraphRAG pipelines in production.",
-      "Designed and deployed ML systems on AWS and Azure with Docker, Kubernetes, and full MLOps practices.",
-    ],
-  },
-  {
-    org: "IIT Kharagpur",
-    role: "M.Tech — Telecommunication Systems Engineering",
-    period: "2014 – 2016",
-    type: "education",
-  },
-  {
-    org: "Dharmsinh Desai University (DDIT)",
-    role: "B.Tech — Electronics & Communication Engineering",
-    period: "2009 – 2013",
-    type: "education",
-  },
-];
+import { timeline } from "@/data/experience";
 
 export default function Experience() {
   return (

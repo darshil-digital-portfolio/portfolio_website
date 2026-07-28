@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Design reference prototype — not production code, removed once the redesign lands.
+    "personal portfolio new design handoff/**",
   ]),
 ]);
 

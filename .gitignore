@@ -49,3 +49,6 @@ public/IBM_resume.pdf
 # playwright logs
 .playwright-mcp/
 
+
+# design reference prototype (deleted once the redesign is implemented)
+personal portfolio new design handoff/
