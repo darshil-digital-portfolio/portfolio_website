@@ -120,9 +120,484 @@ body {
   backdrop-filter: blur(2px);
 }
 
+/* ============================================================
+   Layout primitives
+   ============================================================ */
+
+.wrap {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 44px;
+}
+
+.section {
+  padding: clamp(80px, 12vw, 150px) 0;
+  position: relative;
+}
+
+.section + .section {
+  border-top: 1px solid var(--line-soft);
+}
+
+.sec-head {
+  margin-bottom: 56px;
+}
+
+.sec-label {
+  font-family: var(--font-plex-mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sec-label::before {
+  content: "";
+  width: 26px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.6;
+}
+
+.sec-title {
+  font-family: var(--font-space-grotesk);
+  font-weight: 600;
+  font-size: clamp(30px, 4.4vw, 50px);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  max-width: 18ch;
+}
+
+.sec-lead {
+  margin-top: 20px;
+  max-width: 54ch;
+  font-size: clamp(16px, 1.5vw, 19px);
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 56px;
+  align-items: start;
+}
+
+/* ============================================================
+   Navbar — floating glass pill
+   ============================================================ */
+
+.bar {
+  position: fixed;
+  top: 14px;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bar-inner {
+  width: min(1080px, calc(100% - 28px));
+  min-height: 58px;
+  padding: 0 12px 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 16px;
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
+  -webkit-backdrop-filter: saturate(1.6) blur(16px);
+  backdrop-filter: saturate(1.6) blur(16px);
+  box-shadow: var(--shadow);
+}
+
+.brand {
+  font-family: var(--font-space-grotesk);
+  font-weight: 700;
+  font-size: 17.5px;
+  letter-spacing: -0.025em;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.brand .glyph {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: oklch(0.16 0.02 270);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-plex-mono);
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 0 18px var(--accent-soft);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+
+.nav-links a {
+  font-family: var(--font-plex-mono);
+  font-size: 13px;
+  color: var(--ink-soft);
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: var(--ink);
+}
+
+.icon-btn {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 11px;
+  border: 1px solid var(--glass-line);
+  background: transparent;
+  color: var(--ink-soft);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    transform 0.2s,
+    background 0.2s;
+}
+
+.icon-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
+}
+
+.icon-btn:active {
+  transform: scale(0.94);
+}
+
+/* Mobile dropdown — the prototype simply hides the links; the site
+   keeps its hamburger, restyled to match the pill. */
+.nav-drawer {
+  width: min(1080px, calc(100% - 28px));
+  margin-top: 8px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
+  -webkit-backdrop-filter: saturate(1.6) blur(16px);
+  backdrop-filter: saturate(1.6) blur(16px);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.nav-drawer a {
+  font-family: var(--font-plex-mono);
+  font-size: 13px;
+  color: var(--ink-soft);
+  transition: color 0.2s;
+}
+
+.nav-drawer a:hover {
+  color: var(--ink);
+}
+
+/* ============================================================
+   Hero
+   ============================================================ */
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: 120px 0 80px;
+}
+
+.hero .wrap {
+  width: 100%;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-plex-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--ink-faint);
+  margin-bottom: 26px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-eyebrow .who {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.hero-eyebrow .role {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.hero-eyebrow .sep {
+  color: var(--ink-faint);
+}
+
+.hero-eyebrow .live {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink-soft);
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--live);
+  box-shadow: 0 0 10px var(--live);
+  animation: pulse 2.4s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.hero h1 {
+  font-family: var(--font-space-grotesk);
+  font-weight: 600;
+  /* The handoff caps this at 92px, but the typed line is nowrap and at that
+     size it runs 75px past the 992px container. 85px is the largest cap that
+     still fits. */
+  font-size: clamp(44px, 8vw, 85px);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  margin-bottom: 30px;
+  text-wrap: balance;
+  /* Reserved so the typewriter cannot reflow the page as it types. */
+  min-height: 2.05em;
+}
+
+.grad {
+  background: linear-gradient(100deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Keeps the caret glued to the end of the typed line. */
+.hero h1 .typed-line {
+  white-space: nowrap;
+}
+
+.caret {
+  display: inline-block;
+  width: 3px;
+  height: 0.86em;
+  margin-left: 7px;
+  vertical-align: baseline;
+  transform: translateY(0.1em);
+  background: var(--accent);
+  border-radius: 2px;
+  box-shadow: 0 0 12px var(--accent-soft);
+  animation: blink 1.05s steps(1) infinite;
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.hero-sub {
+  max-width: 58ch;
+  font-size: clamp(17px, 1.7vw, 20px);
+  line-height: 1.62;
+  color: var(--ink-soft);
+  margin-bottom: 38px;
+}
+
+.hero-sub .hl {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.hero-sub .hl-a {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 13px;
+  align-items: center;
+}
+
+.btn {
+  font-family: var(--font-plex-mono);
+  font-size: 13.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px;
+  border-radius: 13px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition:
+    transform 0.18s,
+    box-shadow 0.25s,
+    border-color 0.2s,
+    color 0.2s,
+    background 0.2s;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  color: oklch(0.16 0.02 270);
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 34px var(--accent-soft);
+}
+
+.btn-ghost {
+  border-color: var(--glass-line);
+  color: var(--ink);
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.btn-ghost:hover {
+  border-color: var(--accent-line);
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.btn .arrow {
+  transition: transform 0.2s;
+}
+
+.btn:hover .arrow {
+  transform: translate(3px, -3px);
+}
+
+.proof {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 54px;
+}
+
+.proof .cell {
+  padding: 14px 20px;
+  border-radius: 13px;
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.proof .num {
+  font-family: var(--font-space-grotesk);
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.proof .num .unit {
+  color: var(--accent);
+}
+
+.proof .lbl {
+  font-family: var(--font-plex-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+}
+
 @keyframes shimmer {
   100% {
     transform: translateX(100%);
+  }
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+@media (max-width: 860px) {
+  .wrap {
+    padding: 0 22px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+}
+
+@media (min-width: 861px) {
+  .nav-burger {
+    display: none;
+  }
+}
+
+/* The pill has no room for the wordmark next to the glyph on small phones. */
+@media (max-width: 420px) {
+  .brand .wordmark {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .hero h1 {
+    min-height: 3em;
+  }
+
+  .hero h1 .typed-line {
+    white-space: normal;
   }
 }
 

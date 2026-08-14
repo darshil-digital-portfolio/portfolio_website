@@ -1,32 +1,67 @@
+import Typewriter from "./Typewriter";
+
+const TYPED_LINE = "from data to deployment.";
+
+const PROOF = [
+  { value: "10", unit: " yrs", label: "At IBM India" },
+  { value: "M.Tech", unit: null, label: "IIT Kharagpur" },
+  { value: "7", unit: "+", label: "Enterprise clients" },
+  { value: "CV · NLP · Agents", unit: null, label: "Full AI stack" },
+];
+
 export default function Hero() {
   return (
-    <section className="min-h-screen flex items-center pt-16">
-      <div className="max-w-5xl mx-auto px-6 py-24">
-        <p className="text-sm font-semibold tracking-widest text-blue-600 dark:text-blue-400 uppercase mb-4">
-          AI Engineer
+    <section className="hero" id="top">
+      <div className="wrap">
+        <p className="hero-eyebrow">
+          <span>
+            <span className="who">Darshil Kapadia</span> <span className="sep">/</span>{" "}
+            <span className="role">AI Engineer</span>
+          </span>
+          <span className="live">
+            <span className="pulse-dot" />
+            Open to conversations
+          </span>
         </p>
-        <h1 className="text-5xl sm:text-6xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mb-6">
-          Darshil Kapadia
+
+        {/* The typed half only exists after hydration, so the heading carries
+            its full text as an accessible name. */}
+        <h1 aria-label={`Production AI, ${TYPED_LINE}`}>
+          <span aria-hidden="true">
+            Production AI,
+            <br />
+            <Typewriter text={TYPED_LINE} className="typed grad" />
+          </span>
         </h1>
-        <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed mb-10">
-          10 years at IBM India delivering computer vision, NLP, and agentic AI for global
-          enterprises. I design, train, and ship end-to-end AI systems — from custom model
-          fine-tuning to cloud-scale production deployment.
+
+        <p className="hero-sub">
+          <span className="hl">10+ years</span> at <span className="hl">IBM India</span>, M.Tech from{" "}
+          <span className="hl">IIT Kharagpur</span>. I architect end-to-end AI solutions for global
+          enterprises — MLOps, model train &amp; fine-tune, and orchestrating{" "}
+          <span className="hl-a">AI agents</span> at enterprise scale, secured under a{" "}
+          <span className="hl-a">responsible-AI</span> framework, on <span className="hl-a">AWS</span>{" "}
+          and <span className="hl-a">Azure</span>.
         </p>
-        <div className="flex flex-wrap gap-4">
-          <a
-            href="#projects"
-            className="px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors"
-          >
-            View Projects
+
+        <div className="cta-row">
+          <a href="#projects" className="btn btn-primary">
+            View selected work <span className="arrow">↗</span>
           </a>
-          <a
-            href="/resume.pdf"
-            download
-            className="px-6 py-3 rounded-lg border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 font-medium transition-colors"
-          >
-            Download Resume
+          <a href="/resume.pdf" download className="btn btn-ghost">
+            Download résumé <span className="arrow">↓</span>
           </a>
+        </div>
+
+        <div className="proof">
+          {PROOF.map(({ value, unit, label }) => (
+            <div className="cell" key={label}>
+              <div className="num">
+                {value}
+                {unit && <span className="unit">{unit}</span>}
+              </div>
+              <div className="lbl">{label}</div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
