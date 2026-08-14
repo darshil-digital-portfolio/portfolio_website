@@ -93,6 +93,33 @@ body {
   color: var(--ink);
 }
 
+/* ============================================================
+   Neural field background
+   The canvas is fixed behind everything; every page's content
+   sits in .page so it stacks above it.
+   ============================================================ */
+
+#neural {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+}
+
+/* Readable wash over the animated background, for content sections. */
+.veil {
+  background: linear-gradient(var(--section-veil), var(--section-veil));
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
 @keyframes shimmer {
   100% {
     transform: translateX(100%);
