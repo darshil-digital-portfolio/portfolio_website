@@ -44,7 +44,12 @@ export default function ScrollReveal() {
     collect();
 
     // Suspense streams sections in after mount, so watch for late arrivals.
-    const mutations = new MutationObserver(collect);
+    // The extra sweep covers one already on screen, which would otherwise sit
+    // hidden until the next scroll if its observer entry were missed.
+    const mutations = new MutationObserver(() => {
+      collect();
+      requestAnimationFrame(revealVisible);
+    });
     mutations.observe(document.body, { childList: true, subtree: true });
 
     /**

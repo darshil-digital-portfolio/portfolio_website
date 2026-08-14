@@ -1368,6 +1368,12 @@ body {
     margin-left: 0;
     flex-basis: 100%;
   }
+
+  /* No gutter for the arrows here — they would sit on top of the card.
+     Swipe and the dots cover navigation instead. */
+  .scroll-arrow {
+    display: none;
+  }
 }
 
 @media (min-width: 861px) and (max-width: 1024px) {
@@ -1399,6 +1405,27 @@ body {
   }
 }
 
+/* ============================================================
+   Keyboard focus
+   The design has no focus treatment; these use the accent so focus is
+   visible on glass, on cards and on the gold chips alike.
+   ============================================================ */
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* The fixed navbar would otherwise cover the top of a jumped-to section. */
+.section,
+.hero {
+  scroll-margin-top: 90px;
+}
+
+/* ============================================================
+   Reduced motion
+   ============================================================ */
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1406,5 +1433,45 @@ body {
 
   body {
     transition: none;
+  }
+
+  .caret {
+    animation: none;
+  }
+
+  .pulse-dot,
+  .proj-status .pulse,
+  .chip.gold::after {
+    animation: none;
+  }
+
+  .reveal-up {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .skill-detail {
+    transition: none;
+  }
+
+  .track {
+    scroll-behavior: auto;
+  }
+
+  .btn,
+  .proj-card,
+  .cert-card,
+  .contact-link,
+  .scroll-arrow {
+    transition: none;
+  }
+
+  .btn:hover,
+  .proj-card:hover,
+  .cert-card:hover,
+  .contact-link:hover,
+  .scroll-arrow:hover {
+    transform: none;
   }
 }
