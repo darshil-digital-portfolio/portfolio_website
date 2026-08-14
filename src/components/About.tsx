@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import {
   firstExpandableCategoryLabel,
   firstExpandableName,
@@ -8,165 +8,146 @@ import {
   skillCategories,
 } from "@/data/skills";
 
-function ExpandIcon({ open }: { open: boolean }) {
-  return (
-    <span
-      aria-hidden="true"
-      className={`text-base font-light leading-none transition-transform duration-500 inline-block ${open ? "rotate-45" : ""}`}
-    >
-      +
-    </span>
-  );
-}
+const HINT_OPEN_DELAY = 750;
+const HINT_CLOSE_DELAY = 3000;
 
 export default function About() {
   const [expanded, setExpanded] = useState<string | null>(null);
-  const sectionRef = useRef<HTMLElement>(null);
-  const firstExpandableRef = useRef<HTMLDivElement>(null);
+  // The very first gold chip — observed so we can demo that it opens.
+  const firstGoldRef = useRef<HTMLButtonElement>(null);
 
-  // Auto-play hint on the very first expandable skill when it scrolls into view
   useEffect(() => {
-    const el = firstExpandableRef.current;
+    const el = firstGoldRef.current;
     if (!el || !firstExpandableName) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    let t1: ReturnType<typeof setTimeout>;
-    let t2: ReturnType<typeof setTimeout>;
+    let open: ReturnType<typeof setTimeout>;
+    let close: ReturnType<typeof setTimeout>;
 
+    // Observe the chip itself, not the skills container — a container that
+    // tall can never reach a 0.6 threshold on a normal viewport.
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          t1 = setTimeout(() => setExpanded(firstExpandableName), 600);
-          t2 = setTimeout(() => setExpanded(null), 2800);
-          observer.disconnect();
-        }
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
+        open = setTimeout(() => setExpanded(firstExpandableName), HINT_OPEN_DELAY);
+        close = setTimeout(() => setExpanded(null), HINT_CLOSE_DELAY);
       },
-      { threshold: 0.2 }
+      { threshold: 0.6 }
     );
 
     observer.observe(el);
     return () => {
       observer.disconnect();
-      clearTimeout(t1);
-      clearTimeout(t2);
+      clearTimeout(open);
+      clearTimeout(close);
     };
   }, []);
 
   const toggle = (name: string) => setExpanded((prev) => (prev === name ? null : name));
 
   return (
-    <section
-      ref={sectionRef}
-      id="about"
-      className="py-24 border-t border-slate-200 dark:border-slate-800"
-    >
-      <div className="max-w-5xl mx-auto px-6">
-        <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mb-8">
-          About
-        </h2>
-        <p className="text-lg text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed mb-16">
-          I&apos;m an AI Engineer based in India with a decade of experience at IBM, building
-          production AI systems for global enterprise clients — PepsiCo, Bacardi, Dow Chemicals,
-          JSW, FAA, NedBank, Iffco-Tokio, and more. My work covers the full stack: data pipelines,
-          model training and fine-tuning, agentic system design, and cloud deployment on AWS and
-          Azure. I hold an M.Tech from IIT Kharagpur and a B.Tech in Electronics &amp; Communication
-          Engineering.
-        </p>
+    <section className="section veil" id="about">
+      <div className="wrap">
+        <div className="sec-head reveal-up">
+          <div className="sec-label">01 — About</div>
+          <h2 className="sec-title">A full-stack AI engineer, data to deployment.</h2>
+        </div>
 
-        <div className="space-y-8">
-          {skillCategories.map((cat) => {
-            const expandableInCat = cat.skills.filter(isExpandable);
-            const isFirstExpandableCat = cat.label === firstExpandableCategoryLabel;
+        <div className="grid-2">
+          <p className="about-bio reveal-up">
+            My work spans the full stack of applied AI — classical <em>ML</em> and{" "}
+            <em>deep learning</em>, <em>computer vision</em> and <em>OCR</em>, <em>NLP</em>, and{" "}
+            <em>Generative AI</em> with RAG and <em>AI agents</em>. I&apos;ve taken these to
+            production for global enterprises — PepsiCo, Bacardi, Dow Chemicals, JSW, the FAA,
+            NedBank, and Iffco-Tokio — owning the lifecycle end to end: data pipelines, training and
+            fine-tuning, <em>MLOps</em>, <em>AI evaluations</em>, and <em>responsible-AI</em>{" "}
+            guardrails, deployed on AWS and Azure.
+          </p>
 
-            return (
-              <div key={cat.label} ref={isFirstExpandableCat ? firstExpandableRef : undefined}>
-                <h3 className="text-xs font-semibold tracking-widest uppercase text-slate-400 dark:text-slate-500 mb-3">
-                  {cat.label}
-                </h3>
+          <div className="reveal-up" id="skills">
+            {skillCategories.map((cat) => {
+              const expandableInCat = cat.skills.filter(isExpandable);
+              const isFirstExpandableCat = cat.label === firstExpandableCategoryLabel;
 
-                <div className="flex flex-wrap gap-2">
-                  {cat.skills.map((skill) => {
-                    if (isExpandable(skill)) {
-                      const isOpen = expanded === skill.name;
+              return (
+                <div className="skill-cat" key={cat.label}>
+                  <div className="skill-cat-head">{cat.label}</div>
+
+                  <div className="chips">
+                    {cat.skills.map((skill) => {
+                      if (!isExpandable(skill)) {
+                        return (
+                          <span className="chip" key={skill}>
+                            {skill}
+                          </span>
+                        );
+                      }
+                      const isFirstGold =
+                        isFirstExpandableCat && skill.name === firstExpandableName;
                       return (
                         <button
+                          type="button"
                           key={skill.name}
+                          ref={isFirstGold ? firstGoldRef : undefined}
+                          className="chip expandable gold"
+                          aria-expanded={expanded === skill.name}
+                          aria-controls={`skill-${slug(skill.name)}`}
                           onClick={() => toggle(skill.name)}
-                          className={`px-3 py-1 text-sm rounded-full flex items-center gap-1.5 transition-all duration-300 cursor-pointer font-medium ${
-                            isOpen
-                              ? "bg-amber-500 text-white ring-1 ring-amber-400"
-                              : "bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 ring-1 ring-amber-200 dark:ring-amber-800/60 hover:bg-amber-100 dark:hover:bg-amber-900/40"
-                          }`}
                         >
                           {skill.name}
-                          <ExpandIcon open={isOpen} />
+                          <span className="plus" aria-hidden="true">
+                            +
+                          </span>
                         </button>
                       );
-                    }
-                    return (
-                      <span
-                        key={skill}
-                        className="px-3 py-1 text-sm rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
-                      >
-                        {skill}
-                      </span>
-                    );
-                  })}
-                </div>
+                    })}
+                  </div>
 
-                {/* Always rendered so exit animation plays */}
-                {expandableInCat.map((skill) => (
-                  <div
-                    key={skill.name}
-                    className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                      expanded === skill.name ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
-                    }`}
-                  >
-                    <div className="pt-3">
-                      <div className="p-4 rounded-xl bg-amber-50/70 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800/40 max-w-xs">
-                        <p className="text-sm text-slate-600 dark:text-slate-400 mb-3 leading-relaxed">
-                          {skill.description}
-                        </p>
-                        {skill.subSkillGroups ? (
-                          <div className="space-y-2.5">
-                            {skill.subSkillGroups.map((group) => (
-                              <div key={group.label}>
-                                <p className="text-[10px] font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-500 mb-1.5">
-                                  {group.label}
-                                </p>
-                                <div className="grid grid-cols-3 gap-1.5">
+                  {/* Always rendered so the accordion can animate closed. */}
+                  {expandableInCat.map((skill) => (
+                    <div
+                      key={skill.name}
+                      id={`skill-${slug(skill.name)}`}
+                      className={`skill-detail${expanded === skill.name ? " open" : ""}`}
+                    >
+                      <div>
+                        <div className="panel">
+                          <p>{skill.description}</p>
+                          {skill.subSkillGroups ? (
+                            skill.subSkillGroups.map((group) => (
+                              // Siblings, not wrapped — `.sub-label:first-of-type`
+                              // needs them to share a parent.
+                              <Fragment key={group.label}>
+                                <div className="sub-label">{group.label}</div>
+                                <div className="sub-grid">
                                   {group.items.map((s) => (
-                                    <span
-                                      key={s}
-                                      className="px-2 py-1 text-xs rounded-md bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 text-center"
-                                    >
-                                      {s}
-                                    </span>
+                                    <span key={s}>{s}</span>
                                   ))}
                                 </div>
-                              </div>
-                            ))}
-                          </div>
-                        ) : (
-                          <div className="grid grid-cols-3 gap-1.5">
-                            {skill.subSkills?.map((s) => (
-                              <span
-                                key={s}
-                                className="px-2 py-1 text-xs rounded-md bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 text-center"
-                              >
-                                {s}
-                              </span>
-                            ))}
-                          </div>
-                        )}
+                              </Fragment>
+                            ))
+                          ) : (
+                            <div className="sub-grid">
+                              {skill.subSkills?.map((s) => (
+                                <span key={s}>{s}</span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            );
-          })}
+                  ))}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
   );
+}
+
+function slug(name: string) {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 }

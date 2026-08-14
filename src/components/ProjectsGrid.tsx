@@ -4,6 +4,10 @@ import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import type { ProjectCard } from "@/types/project";
 import { parseTag } from "@/types/project";
 import ProjectCardView from "./ProjectCard";
+import { ChevronLeftIcon, ChevronRightIcon } from "./icons";
+
+/** Card width + `.track` gap — the distance one arrow press or dot travels. */
+const TRACK_GAP = 20;
 
 const STATUS_FILTER_OPTIONS: Array<{ value: ProjectCard["status"] | "offline"; label: string }> = [
   { value: "online", label: "Live" },
@@ -124,7 +128,7 @@ export default function ProjectsGrid({ projects }: Props) {
       right: max > 4 && el.scrollLeft < max - 4,
     });
     const first = el.firstElementChild as HTMLElement | null;
-    const step = (first?.clientWidth ?? 1) + 24;
+    const step = (first?.clientWidth ?? 1) + TRACK_GAP;
     setActiveIndex(Math.min(filtered.length - 1, Math.max(0, Math.round(el.scrollLeft / step))));
   }, [filtered.length]);
 
@@ -171,7 +175,7 @@ export default function ProjectsGrid({ projects }: Props) {
     const el = scrollerRef.current;
     if (!el) return;
     const first = el.firstElementChild as HTMLElement | null;
-    const step = (first?.clientWidth ?? 360) + 24;
+    const step = (first?.clientWidth ?? 360) + TRACK_GAP;
     el.scrollBy({ left: dir * step, behavior: "smooth" });
   };
 
@@ -179,18 +183,9 @@ export default function ProjectsGrid({ projects }: Props) {
     const el = scrollerRef.current;
     if (!el) return;
     const first = el.firstElementChild as HTMLElement | null;
-    const step = (first?.clientWidth ?? 1) + 24;
+    const step = (first?.clientWidth ?? 1) + TRACK_GAP;
     el.scrollTo({ left: i * step, behavior: "smooth" });
   };
-
-  const maskImage =
-    edgeState.left && edgeState.right
-      ? "linear-gradient(to right, transparent, black 2.5rem, black calc(100% - 2.5rem), transparent)"
-      : edgeState.left
-        ? "linear-gradient(to right, transparent, black 2.5rem, black)"
-        : edgeState.right
-          ? "linear-gradient(to right, black, black calc(100% - 2.5rem), transparent)"
-          : undefined;
 
   return (
     <>
@@ -202,7 +197,6 @@ export default function ProjectsGrid({ projects }: Props) {
                 key={value}
                 label={label}
                 active={activeStatus === value}
-                color="blue"
                 onClick={() => setActiveStatus(activeStatus === value ? null : value)}
               />
             ))}
@@ -212,7 +206,6 @@ export default function ProjectsGrid({ projects }: Props) {
                 key={ind}
                 label={ind}
                 active={activeIndustry === ind}
-                color="violet"
                 onClick={() => setActiveIndustry(activeIndustry === ind ? null : ind)}
               />
             ))}
@@ -221,88 +214,59 @@ export default function ProjectsGrid({ projects }: Props) {
               key={g}
               label={g}
               active={activeTagGroup === g}
-              color="emerald"
               onClick={() => setActiveTagGroup(activeTagGroup === g ? null : g)}
             />
           ))}
           {anyActive && (
             <button
+              type="button"
               onClick={() => {
                 setActiveStatus(null);
                 setActiveIndustry(null);
                 setActiveTagGroup(null);
               }}
-              className="px-3 py-1 text-xs rounded-full text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
+              className="filter-chip border-transparent bg-transparent"
             >
               Clear
             </button>
           )}
         </div>
       )}
+
       {filtered.length === 0 ? (
-        <p className="text-slate-500 dark:text-slate-400">
-          No projects match the selected filters.
-        </p>
+        <p className="text-ink-soft">No projects match the selected filters.</p>
       ) : (
-        <div className="relative group/scroller">
+        <div className="scroller">
           <button
             type="button"
-            aria-label="Scroll projects left"
+            className="scroll-arrow left"
+            aria-label="Previous project"
+            disabled={!edgeState.left}
             onClick={() => scrollByCard(-1)}
-            className={`hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-10 h-10 rounded-full bg-white/85 dark:bg-slate-900/85 backdrop-blur border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 shadow-lg hover:bg-white dark:hover:bg-slate-800 hover:scale-105 active:scale-95 transition duration-200 ${edgeState.left ? "opacity-100" : "opacity-0 pointer-events-none"}`}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.25"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <polyline points="15 18 9 12 15 6" />
-            </svg>
+            <ChevronLeftIcon />
           </button>
-          <div
-            ref={scrollerRef}
-            style={maskImage ? { maskImage, WebkitMaskImage: maskImage } : undefined}
-            className="flex gap-6 overflow-x-auto overflow-y-hidden snap-x snap-mandatory scroll-smooth py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          >
+
+          <div ref={scrollerRef} className="track">
             {filtered.map((project) => (
-              <div
-                key={project.id}
-                className="w-[80vw] sm:w-[340px] lg:w-[380px] shrink-0 snap-start"
-              >
+              <article key={project.id} className="scroll-card">
                 <ProjectCardView project={project} />
-              </div>
+              </article>
             ))}
           </div>
+
           <button
             type="button"
-            aria-label="Scroll projects right"
+            className="scroll-arrow right"
+            aria-label="Next project"
+            disabled={!edgeState.right}
             onClick={() => scrollByCard(1)}
-            className={`hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 z-10 items-center justify-center w-10 h-10 rounded-full bg-white/85 dark:bg-slate-900/85 backdrop-blur border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 shadow-lg hover:bg-white dark:hover:bg-slate-800 hover:scale-105 active:scale-95 transition duration-200 ${edgeState.right ? "opacity-100" : "opacity-0 pointer-events-none"}`}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.25"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <polyline points="9 18 15 12 9 6" />
-            </svg>
+            <ChevronRightIcon />
           </button>
+
           {filtered.length > 1 && (
-            <div className="md:hidden flex justify-center items-center gap-1.5 mt-5">
+            <div className="scroll-dots">
               {filtered.map((p, i) => (
                 <button
                   key={p.id}
@@ -310,11 +274,7 @@ export default function ProjectsGrid({ projects }: Props) {
                   aria-label={`Go to project ${i + 1} of ${filtered.length}`}
                   aria-current={activeIndex === i ? "true" : undefined}
                   onClick={() => scrollToIndex(i)}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    activeIndex === i
-                      ? "w-6 bg-blue-500 dark:bg-blue-400"
-                      : "w-1.5 bg-slate-300 dark:bg-slate-700"
-                  }`}
+                  className={activeIndex === i ? "active" : undefined}
                 />
               ))}
             </div>
@@ -325,38 +285,17 @@ export default function ProjectsGrid({ projects }: Props) {
   );
 }
 
-const COLOR_MAP = {
-  blue: {
-    active: "bg-blue-600 border-blue-600 text-white",
-    idle: "border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-blue-400 dark:hover:border-blue-600",
-  },
-  violet: {
-    active: "bg-violet-600 border-violet-600 text-white",
-    idle: "border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-violet-400 dark:hover:border-violet-600",
-  },
-  emerald: {
-    active: "bg-emerald-600 border-emerald-600 text-white",
-    idle: "border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-emerald-400 dark:hover:border-emerald-600",
-  },
-};
-
 function FilterChip({
   label,
   active,
-  color,
   onClick,
 }: {
   label: string;
   active: boolean;
-  color: keyof typeof COLOR_MAP;
   onClick: () => void;
 }) {
-  const { active: activeClass, idle } = COLOR_MAP[color];
   return (
-    <button
-      onClick={onClick}
-      className={`px-3 py-1 text-xs rounded-full border font-medium transition-colors ${active ? activeClass : idle}`}
-    >
+    <button type="button" onClick={onClick} aria-pressed={active} className="filter-chip">
       {label}
     </button>
   );

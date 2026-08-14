@@ -19,8 +19,8 @@ export default function ThumbnailImage({ src, alt, sizes, className = "" }: Thum
   return (
     <>
       {!loaded && (
-        <div className="absolute inset-0 bg-slate-200 dark:bg-slate-800">
-          <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.4s_infinite] bg-gradient-to-r from-transparent via-slate-100/60 dark:via-slate-700/60 to-transparent" />
+        <div className="absolute inset-0 bg-bg-3">
+          <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.4s_infinite] bg-gradient-to-r from-transparent via-line/60 to-transparent" />
         </div>
       )}
       <Image

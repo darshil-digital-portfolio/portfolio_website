@@ -5,15 +5,38 @@ export default async function Projects() {
   const projects = await getAllProjectCards();
 
   return (
-    <section id="projects" className="py-24 border-t border-slate-200 dark:border-slate-800">
-      <div className="max-w-5xl mx-auto px-6">
-        <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 mb-12">
-          Projects
-        </h2>
+    <section className="section veil" id="projects">
+      <div className="wrap">
+        <div className="sec-head reveal-up">
+          <div className="sec-label">02 — Selected work</div>
+          <h2 className="sec-title">Things I&apos;ve built.</h2>
+          <p className="sec-lead">
+            Enterprise work at IBM is under NDA — these are the pieces I can show in the open.
+          </p>
+        </div>
+
         {projects.length === 0 ? (
-          <p className="text-slate-500 dark:text-slate-400">No projects yet.</p>
+          <p className="text-ink-soft">No projects yet.</p>
         ) : (
-          <ProjectsGrid projects={projects} />
+          <>
+            <div className="note-line reveal-up">
+              <span className="blip" />
+              {projects.length} project{projects.length === 1 ? "" : "s"} · served from S3, fetched
+              server-side · swipe / drag to browse
+            </div>
+
+            <div className="reveal-up">
+              <ProjectsGrid projects={projects} />
+            </div>
+
+            <div className="more-work reveal-up">
+              More on GitHub
+              <span className="ln" />
+              <a href="https://github.com/k-darshil" target="_blank" rel="noopener noreferrer">
+                github.com/k-darshil ↗
+              </a>
+            </div>
+          </>
         )}
       </div>
     </section>

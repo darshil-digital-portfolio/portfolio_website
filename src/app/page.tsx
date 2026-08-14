@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import NeuralBackground from "@/components/NeuralBackground";
+import ScrollReveal from "@/components/ScrollReveal";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
@@ -17,6 +18,7 @@ export default function Home() {
   return (
     <>
       <NeuralBackground />
+      <ScrollReveal />
       <div className="page">
         <Navbar />
         <main>
@@ -25,15 +27,20 @@ export default function Home() {
           <Suspense fallback={<ProjectsGridSkeleton />}>
             <Projects />
           </Suspense>
+          <Experience />
+          <Certifications />
+          {/* Writing sits at 05, between Certs and Contact, per the design's
+              section numbering. The component itself is untouched. */}
           <Suspense fallback={<ArticlesScrollerSkeleton />}>
             <Articles />
           </Suspense>
-          <Experience />
-          <Certifications />
           <Contact />
         </main>
-        <footer className="border-t border-slate-200 dark:border-slate-800 py-8 text-center text-sm text-slate-400 dark:text-slate-600">
-          © 2026 Darshil Kapadia
+        <footer className="foot">
+          <div className="wrap">
+            <span>© 2026 Darshil Kapadia</span>
+            <span>Built in India</span>
+          </div>
         </footer>
       </div>
     </>
