@@ -1,13 +1,10 @@
 "use client";
 
-import { useState, useMemo, useRef, useEffect, useCallback } from "react";
+import { useState, useMemo } from "react";
 import type { ProjectCard } from "@/types/project";
 import { parseTag } from "@/types/project";
 import ProjectCardView from "./ProjectCard";
-import { ChevronLeftIcon, ChevronRightIcon } from "./icons";
-
-/** Card width + `.track` gap — the distance one arrow press or dot travels. */
-const TRACK_GAP = 20;
+import Scroller from "./Scroller";
 
 const STATUS_FILTER_OPTIONS: Array<{ value: ProjectCard["status"] | "offline"; label: string }> = [
   { value: "online", label: "Live" },
@@ -112,81 +109,6 @@ export default function ProjectsGrid({ projects }: Props) {
 
   const anyActive = activeStatus || activeIndustry || activeTagGroup;
 
-  const scrollerRef = useRef<HTMLDivElement>(null);
-  const [edgeState, setEdgeState] = useState<{ left: boolean; right: boolean }>({
-    left: false,
-    right: false,
-  });
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const updateScrollState = useCallback(() => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    const max = el.scrollWidth - el.clientWidth;
-    setEdgeState({
-      left: el.scrollLeft > 4,
-      right: max > 4 && el.scrollLeft < max - 4,
-    });
-    const first = el.firstElementChild as HTMLElement | null;
-    const step = (first?.clientWidth ?? 1) + TRACK_GAP;
-    setActiveIndex(Math.min(filtered.length - 1, Math.max(0, Math.round(el.scrollLeft / step))));
-  }, [filtered.length]);
-
-  useEffect(() => {
-    updateScrollState();
-    const el = scrollerRef.current;
-    if (!el) return;
-    el.addEventListener("scroll", updateScrollState, { passive: true });
-    const ro = new ResizeObserver(updateScrollState);
-    ro.observe(el);
-    return () => {
-      el.removeEventListener("scroll", updateScrollState);
-      ro.disconnect();
-    };
-  }, [updateScrollState, filtered.length]);
-
-  const hintedRef = useRef(false);
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (window.matchMedia("(min-width: 768px)").matches) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const el = scrollerRef.current;
-    if (!el || filtered.length < 2) return;
-
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting && !hintedRef.current && el.scrollLeft < 4) {
-            hintedRef.current = true;
-            window.setTimeout(() => {
-              el.scrollBy({ left: 56, behavior: "smooth" });
-              window.setTimeout(() => el.scrollBy({ left: -56, behavior: "smooth" }), 480);
-            }, 450);
-          }
-        }
-      },
-      { threshold: 0.35 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [filtered.length]);
-
-  const scrollByCard = (dir: -1 | 1) => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    const first = el.firstElementChild as HTMLElement | null;
-    const step = (first?.clientWidth ?? 360) + TRACK_GAP;
-    el.scrollBy({ left: dir * step, behavior: "smooth" });
-  };
-
-  const scrollToIndex = (i: number) => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    const first = el.firstElementChild as HTMLElement | null;
-    const step = (first?.clientWidth ?? 1) + TRACK_GAP;
-    el.scrollTo({ left: i * step, behavior: "smooth" });
-  };
-
   return (
     <>
       {hasFilterUI && (
@@ -236,50 +158,16 @@ export default function ProjectsGrid({ projects }: Props) {
       {filtered.length === 0 ? (
         <p className="text-ink-soft">No projects match the selected filters.</p>
       ) : (
-        <div className="scroller">
-          <button
-            type="button"
-            className="scroll-arrow left"
-            aria-label="Previous project"
-            disabled={!edgeState.left}
-            onClick={() => scrollByCard(-1)}
-          >
-            <ChevronLeftIcon />
-          </button>
-
-          <div ref={scrollerRef} className="track">
-            {filtered.map((project) => (
-              <article key={project.id} className="scroll-card">
-                <ProjectCardView project={project} />
-              </article>
-            ))}
-          </div>
-
-          <button
-            type="button"
-            className="scroll-arrow right"
-            aria-label="Next project"
-            disabled={!edgeState.right}
-            onClick={() => scrollByCard(1)}
-          >
-            <ChevronRightIcon />
-          </button>
-
-          {filtered.length > 1 && (
-            <div className="scroll-dots">
-              {filtered.map((p, i) => (
-                <button
-                  key={p.id}
-                  type="button"
-                  aria-label={`Go to project ${i + 1} of ${filtered.length}`}
-                  aria-current={activeIndex === i ? "true" : undefined}
-                  onClick={() => scrollToIndex(i)}
-                  className={activeIndex === i ? "active" : undefined}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+        // Remounted per filter combination so the track starts at the left
+        // edge rather than mid-scroll on a now-shorter list.
+        <Scroller
+          key={`${activeStatus}-${activeIndustry}-${activeTagGroup}`}
+          items={filtered}
+          itemKey={(p) => p.id}
+          noun="project"
+        >
+          {(project) => <ProjectCardView project={project} />}
+        </Scroller>
       )}
     </>
   );

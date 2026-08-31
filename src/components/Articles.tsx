@@ -1,27 +1,37 @@
 import { fetchArticles } from "@/lib/medium";
 import ArticlesScroller from "./ArticlesScroller";
 
+const MEDIUM_PROFILE = "https://medium.com/@kapadiadarshil25";
+
 export default async function Articles() {
   const articles = await fetchArticles();
   if (articles.length === 0) return null;
 
   return (
-    <section id="articles" className="py-24 border-t border-slate-200 dark:border-slate-800">
-      <div className="max-w-5xl mx-auto px-6">
-        <div className="mb-12 flex flex-wrap items-baseline justify-between gap-3">
-          <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
-            Articles
-          </h2>
-          <a
-            href="https://medium.com/@kapadiadarshil25"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-medium text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400"
-          >
-            See all on Medium →
-          </a>
+    <section className="section veil" id="articles">
+      <div className="wrap">
+        <div className="sec-head reveal-up">
+          <div className="sec-label">05 — Writing</div>
+          <div className="head-row">
+            <h2 className="sec-title">Thinking out loud.</h2>
+            <a className="head-link" href={MEDIUM_PROFILE} target="_blank" rel="noopener noreferrer">
+              See all on Medium ↗
+            </a>
+          </div>
+          <p className="sec-lead">
+            Notes on shipping AI to production — fine-tuning, agents, evals, and the unglamorous
+            MLOps in between.
+          </p>
         </div>
-        <ArticlesScroller articles={articles} />
+
+        <div className="note-line reveal-up">
+          <span className="blip" />
+          Posts fetched server-side from Medium · swipe / drag to browse
+        </div>
+
+        <div className="reveal-up">
+          <ArticlesScroller articles={articles} />
+        </div>
       </div>
     </section>
   );

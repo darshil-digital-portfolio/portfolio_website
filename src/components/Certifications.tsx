@@ -19,10 +19,10 @@ export default function Certifications() {
       <div className="wrap">
         <div className="sec-head reveal-up">
           <div className="sec-label">04 — Certifications</div>
-          <div className="cert-head">
+          <div className="head-row">
             <h2 className="sec-title">Credentials.</h2>
             <a
-              className="credly"
+              className="head-link"
               href={CREDLY_PROFILE_URL}
               target="_blank"
               rel="noopener noreferrer"

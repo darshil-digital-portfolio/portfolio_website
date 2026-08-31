@@ -770,7 +770,8 @@ body {
    Certifications
    ============================================================ */
 
-.cert-head {
+/* Section title with a right-aligned link — Certifications and Writing. */
+.head-row {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -778,14 +779,14 @@ body {
   flex-wrap: wrap;
 }
 
-.cert-head .credly {
+.head-row .head-link {
   font-family: var(--font-plex-mono);
   font-size: 13px;
   color: var(--accent);
   white-space: nowrap;
 }
 
-.cert-head .credly:hover {
+.head-row .head-link:hover {
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -1105,6 +1106,110 @@ body {
 
 .proj-status:not(.idle) .pulse {
   animation: pulse 2.4s infinite;
+}
+
+/* Writing — text-forward card, with the cover image the real feed provides. */
+.blog-card {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--bg-2);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition:
+    border-color 0.3s,
+    transform 0.3s,
+    box-shadow 0.3s;
+}
+
+.blog-card:hover {
+  border-color: var(--accent-line);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+
+.blog-shot {
+  aspect-ratio: 16 / 9;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-3);
+  border-bottom: 1px solid var(--line);
+}
+
+.blog-shot img {
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.blog-card:hover .blog-shot img {
+  transform: scale(1.02);
+}
+
+.blog-body {
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.blog-card .wtag {
+  font-family: var(--font-plex-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+
+.blog-card h3 {
+  font-family: var(--font-space-grotesk);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  transition: color 0.3s;
+}
+
+.blog-card:hover h3 {
+  color: var(--accent);
+}
+
+.blog-card p {
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.blog-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.blog-tags span {
+  font-family: var(--font-plex-mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+}
+
+.blog-card .meta {
+  font-family: var(--font-plex-mono);
+  font-size: 11.5px;
+  color: var(--ink-faint);
+  margin-top: auto;
+}
+
+/* Two lines max, so cards in a row stay the same shape. */
+.clamp-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
 }
 
 .more-work {
