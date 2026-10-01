@@ -6,10 +6,7 @@ import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Projects from "@/components/Projects";
 import Articles from "@/components/Articles";
-import {
-  ProjectsGridSkeleton,
-  ArticlesScrollerSkeleton,
-} from "@/components/ProjectSkeleton";
+import { ProjectsGridSkeleton, ArticlesScrollerSkeleton } from "@/components/ProjectSkeleton";
 import Experience from "@/components/Experience";
 import Certifications from "@/components/Certifications";
 import Contact from "@/components/Contact";

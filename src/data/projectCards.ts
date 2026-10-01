@@ -31,9 +31,7 @@ async function fetchCard(slug: string): Promise<ProjectCard | null> {
     if (!body) throw new Error(`Empty body for ${slug}`);
     const card = JSON.parse(body) as ProjectCard;
     if (card.thumbnail) card.thumbnail = toApiUrl(card.thumbnail);
-    card.diagrams = card.diagrams?.map((d) =>
-      d.url ? { ...d, url: toApiUrl(d.url) } : d
-    );
+    card.diagrams = card.diagrams?.map((d) => (d.url ? { ...d, url: toApiUrl(d.url) } : d));
     return card;
   } catch (err) {
     console.error(`[projectCards] failed to fetch ${slug}:`, err);

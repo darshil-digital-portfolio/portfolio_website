@@ -12,9 +12,7 @@ interface DrawioDiagramProps {
  */
 export default function DrawioDiagram({ title, url }: DrawioDiagramProps) {
   const absoluteUrl =
-    typeof window !== "undefined" && url.startsWith("/")
-      ? `${window.location.origin}${url}`
-      : url;
+    typeof window !== "undefined" && url.startsWith("/") ? `${window.location.origin}${url}` : url;
   const viewerUrl = `https://viewer.diagrams.net/?url=${encodeURIComponent(absoluteUrl)}&toolbar=false&nav=false&fit=1`;
 
   return (

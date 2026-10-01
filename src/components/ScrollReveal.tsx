@@ -16,7 +16,9 @@ export default function ScrollReveal() {
     if (reduced) {
       // Suspense streams sections in after mount, so watch for late arrivals.
       const reveal = () =>
-        document.querySelectorAll<HTMLElement>(".reveal-up").forEach((el) => el.classList.add("in"));
+        document
+          .querySelectorAll<HTMLElement>(".reveal-up")
+          .forEach((el) => el.classList.add("in"));
       reveal();
       const mo = new MutationObserver(reveal);
       mo.observe(document.body, { childList: true, subtree: true });

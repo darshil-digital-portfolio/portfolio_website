@@ -14,7 +14,12 @@ export default async function Articles() {
           <div className="sec-label">05 — Writing</div>
           <div className="head-row">
             <h2 className="sec-title">Thinking out loud.</h2>
-            <a className="head-link" href={MEDIUM_PROFILE} target="_blank" rel="noopener noreferrer">
+            <a
+              className="head-link"
+              href={MEDIUM_PROFILE}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               See all on Medium ↗
             </a>
           </div>

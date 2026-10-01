@@ -35,12 +35,12 @@ export default function Hero() {
         </h1>
 
         <p className="hero-sub">
-          <span className="hl">10+ years</span> at <span className="hl">IBM India</span>, M.Tech from{" "}
-          <span className="hl">IIT Kharagpur</span>. I architect end-to-end AI solutions for global
-          enterprises — MLOps, model train &amp; fine-tune, and orchestrating{" "}
+          <span className="hl">10+ years</span> at <span className="hl">IBM India</span>, M.Tech
+          from <span className="hl">IIT Kharagpur</span>. I architect end-to-end AI solutions for
+          global enterprises — MLOps, model train &amp; fine-tune, and orchestrating{" "}
           <span className="hl-a">AI agents</span> at enterprise scale, secured under a{" "}
-          <span className="hl-a">responsible-AI</span> framework, on <span className="hl-a">AWS</span>{" "}
-          and <span className="hl-a">Azure</span>.
+          <span className="hl-a">responsible-AI</span> framework, on{" "}
+          <span className="hl-a">AWS</span> and <span className="hl-a">Azure</span>.
         </p>
 
         <div className="cta-row">

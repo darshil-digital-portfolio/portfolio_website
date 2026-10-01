@@ -104,10 +104,7 @@ export default function NeuralBackground() {
     };
 
     function build() {
-      const target = Math.max(
-        MIN_NODES,
-        Math.min(Math.round((W * H) / AREA_PER_NODE), MAX_NODES)
-      );
+      const target = Math.max(MIN_NODES, Math.min(Math.round((W * H) / AREA_PER_NODE), MAX_NODES));
       nodes = [];
       for (let i = 0; i < target; i++) {
         const ang = Math.random() * Math.PI * 2;

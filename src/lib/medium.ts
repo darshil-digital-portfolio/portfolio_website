@@ -80,7 +80,11 @@ function readCdata(value: unknown): string {
   if (typeof value === "object" && "#cdata" in value) {
     const inner = (value as { "#cdata"?: unknown })["#cdata"];
     if (typeof inner === "string") return inner.trim();
-    if (Array.isArray(inner)) return inner.filter((s) => typeof s === "string").join("").trim();
+    if (Array.isArray(inner))
+      return inner
+        .filter((s) => typeof s === "string")
+        .join("")
+        .trim();
   }
   if (typeof value === "object" && "#text" in value) {
     const t = (value as { "#text"?: unknown })["#text"];
