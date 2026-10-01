@@ -1067,6 +1067,7 @@ body {
 
 .proj-links {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   gap: 16px;
   margin-top: 4px;
@@ -1081,6 +1082,98 @@ body {
 .proj-links a:hover {
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+/* Live + Source collapse to icons and sit at the far edge of the footer row. */
+.proj-icon-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.proj-links a.icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  margin: -6px 0;
+  border-radius: 8px;
+  color: var(--ink-faint);
+  transition:
+    color 0.25s,
+    background 0.25s;
+}
+
+.proj-links a.icon-link:hover,
+.proj-links a.icon-link:focus-visible {
+  color: var(--accent);
+  background: var(--accent-soft);
+  text-decoration: none;
+}
+
+/* Details is the primary action, so it keeps its label and leads with the mark. */
+.proj-links a.details-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.proj-links a.details-link svg {
+  flex: none;
+}
+
+/* The live link carries the same green as the status badge at the top of the
+   card, so "it's running" is said once in one colour rather than twice in two. */
+.proj-links a.icon-link.live-link {
+  color: var(--live);
+}
+
+.proj-links a.icon-link.live-link:hover,
+.proj-links a.icon-link.live-link:focus-visible {
+  color: var(--live);
+  background: color-mix(in oklab, var(--live) 14%, transparent);
+}
+
+/* The mark is always fully legible; the animation rides on top of it rather than
+   fading it out, so the icon never decays into a lone dot mid-cycle. The loop is
+   symmetric — it ends where it starts — so there is no snap at the seam, and the
+   0.55s offset on the outer pair is what reads as a ripple travelling outward. */
+.live-link .wave {
+  transform-origin: 12px 12px;
+  animation: radiate 2.2s ease-in-out infinite;
+}
+
+.live-link .wave-2 {
+  animation-delay: 0.55s;
+}
+
+@keyframes radiate {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(0.88);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+/* The core never moves — it is the thing doing the transmitting. */
+.live-link circle {
+  animation: core-glow 2.2s ease-in-out infinite;
+}
+
+@keyframes core-glow {
+  0%,
+  100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 .proj-status {
@@ -1546,8 +1639,16 @@ body {
 
   .pulse-dot,
   .proj-status .pulse,
+  .live-link .wave,
+  .live-link circle,
   .chip.gold::after {
     animation: none;
+  }
+
+  .live-link .wave,
+  .live-link circle {
+    opacity: 1;
+    transform: none;
   }
 
   .reveal-up {

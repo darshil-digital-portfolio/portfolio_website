@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ProjectCard } from "@/types/project";
+import { BroadcastIcon, DocumentIcon, GitHubIcon } from "./icons";
 import ThumbnailImage from "./ThumbnailImage";
 
 interface ProjectCardProps {
@@ -60,17 +61,37 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         </div>
 
         <div className="proj-links">
-          <Link href={`/projects/${project.id}`}>Details ↗</Link>
-          {project.links.live && (
-            <a href={project.links.live} target="_blank" rel="noopener noreferrer">
-              Live ↗
-            </a>
-          )}
-          {project.links.github && (
-            <a href={project.links.github} target="_blank" rel="noopener noreferrer">
-              Source ↗
-            </a>
-          )}
+          <Link href={`/projects/${project.id}`} className="details-link">
+            <DocumentIcon size={15} />
+            Details
+          </Link>
+
+          <div className="proj-icon-links">
+            {project.links.live && (
+              <a
+                href={project.links.live}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="icon-link live-link"
+                aria-label={`Open the live ${project.title} site`}
+                title="Live site"
+              >
+                <BroadcastIcon size={17} />
+              </a>
+            )}
+            {project.links.github && (
+              <a
+                href={project.links.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="icon-link"
+                aria-label={`View ${project.title} source on GitHub`}
+                title="Source on GitHub"
+              >
+                <GitHubIcon size={16} />
+              </a>
+            )}
+          </div>
         </div>
       </div>
     </div>

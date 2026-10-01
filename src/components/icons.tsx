@@ -95,3 +95,32 @@ export function GitHubIcon({ size = 18, className }: IconProps) {
     </svg>
   );
 }
+
+/**
+ * "Live" reads as a state, not a place — a transmitter with arcs radiating out
+ * of it, rather than a globe. The arc classes let the CSS pulse them outward in
+ * sequence, which is what makes the icon feel live rather than just look it.
+ */
+export function BroadcastIcon({ size = 18, className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...strokeProps}>
+      <circle cx="12" cy="12" r="2.25" fill="currentColor" stroke="none" />
+      <path className="wave wave-1" d="M8.4 8.4a5.1 5.1 0 0 0 0 7.2" />
+      <path className="wave wave-1" d="M15.6 8.4a5.1 5.1 0 0 1 0 7.2" />
+      <path className="wave wave-2" d="M5.4 5.4a9.3 9.3 0 0 0 0 13.2" />
+      <path className="wave wave-2" d="M18.6 5.4a9.3 9.3 0 0 1 0 13.2" />
+    </svg>
+  );
+}
+
+/** "Details" goes to the written case study, so the mark is a document. */
+export function DocumentIcon({ size = 18, className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...strokeProps}>
+      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+      <path d="M14 3v5h5" />
+      <path d="M9 13h6" />
+      <path d="M9 17h4" />
+    </svg>
+  );
+}
