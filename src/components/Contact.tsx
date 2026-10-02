@@ -31,8 +31,8 @@ export default function Contact() {
                 target={external ? "_blank" : undefined}
                 rel={external ? "noopener noreferrer" : undefined}
               >
-                <Icon />
-                {label}
+                <Icon size={21} />
+                <span className="visually-hidden">{label}</span>
               </a>
             ))}
           </div>

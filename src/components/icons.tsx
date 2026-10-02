@@ -124,3 +124,40 @@ export function DocumentIcon({ size = 18, className }: IconProps) {
     </svg>
   );
 }
+
+/**
+ * Button marks carry a heavier stroke than the UI icons above — at button size a
+ * 2px stroke renders near 1.3px and reads as a text glyph rather than a mark.
+ * The moving half sits in its own <g> so the CSS can animate it against the
+ * static half: the shaft falls into the tray, the arrow leaves and re-enters.
+ */
+const markProps = {
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 2.6,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+};
+
+export function DownloadIcon({ size = 20, className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...markProps}>
+      <g className="mark-move">
+        <path d="M12 3v11" />
+        <path d="m7.6 10 4.4 4.4 4.4-4.4" />
+      </g>
+      <path d="M4.5 20.2h15" />
+    </svg>
+  );
+}
+
+export function ArrowRightIcon({ size = 20, className }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" className={className} {...markProps}>
+      <g className="mark-move">
+        <path d="M3.5 12h15" />
+        <path d="m12 5.5 6.5 6.5-6.5 6.5" />
+      </g>
+    </svg>
+  );
+}

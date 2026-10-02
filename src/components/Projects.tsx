@@ -28,14 +28,6 @@ export default async function Projects() {
             <div className="reveal-up">
               <ProjectsGrid projects={projects} />
             </div>
-
-            <div className="more-work reveal-up">
-              More on GitHub
-              <span className="ln" />
-              <a href="https://github.com/k-darshil" target="_blank" rel="noopener noreferrer">
-                github.com/k-darshil ↗
-              </a>
-            </div>
           </>
         )}
       </div>

@@ -1,4 +1,5 @@
 import Typewriter from "./Typewriter";
+import { ArrowRightIcon, DownloadIcon } from "./icons";
 
 const TYPED_LINE = "from data to deployment.";
 
@@ -44,11 +45,17 @@ export default function Hero() {
         </p>
 
         <div className="cta-row">
-          <a href="#projects" className="btn btn-primary">
-            View selected work <span className="arrow">↗</span>
+          <a href="#projects" className="btn btn-primary btn-work">
+            View selected work
+            <span className="btn-mark mark-right">
+              <ArrowRightIcon size={19} />
+            </span>
           </a>
-          <a href="/resume.pdf" download className="btn btn-ghost">
-            Download résumé <span className="arrow">↓</span>
+          <a href="/resume.pdf" download className="btn btn-primary btn-resume">
+            Résumé
+            <span className="btn-mark mark-down">
+              <DownloadIcon size={19} />
+            </span>
           </a>
         </div>
 

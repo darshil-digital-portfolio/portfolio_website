@@ -72,11 +72,11 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                 href={project.links.live}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="icon-link live-link"
-                aria-label={`Open the live ${project.title} site`}
-                title="Live site"
+                className="live-link live-pill"
+                aria-label={`Visit the live ${project.title} site`}
               >
-                <BroadcastIcon size={17} />
+                <BroadcastIcon size={15} />
+                Visit site
               </a>
             )}
             {project.links.github && (
