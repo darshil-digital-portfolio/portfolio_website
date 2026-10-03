@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { ProjectDiagram } from "@/types/project";
 import MermaidDiagram from "./MermaidDiagram";
 import DrawioDiagram from "./DrawioDiagram";
+import { useTheme } from "./ThemeProvider";
 
 interface DiagramTabsProps {
   diagrams: ProjectDiagram[];
@@ -18,6 +19,7 @@ export default function DiagramTabs({ diagrams, featuredDiagram }: DiagramTabsPr
       )
     : 0;
   const [activeIdx, setActiveIdx] = useState(defaultIdx);
+  const { theme } = useTheme();
 
   const active = diagrams[activeIdx];
   if (!active) return null;
@@ -58,6 +60,20 @@ export default function DiagramTabs({ diagrams, featuredDiagram }: DiagramTabsPr
         </div>
       ) : active.format === "drawio" && active.url ? (
         <DrawioDiagram title={active.title} url={active.url} />
+      ) : active.format === "html" && active.url ? (
+        <div className="w-full lg:w-[min(1120px,calc(100vw-3rem))] lg:relative lg:left-1/2 lg:-translate-x-1/2 overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700">
+          {/* embed=1 shows only the diagram (no toolbar or export). Sized by aspect ratio so the frame never scrolls;
+              on narrow screens the wrapper scrolls sideways instead of shrinking the text.
+              No allow-same-origin: the diagram is served from our own /api/s3 proxy, so its scripts must stay in an opaque origin. */}
+          <iframe
+            src={`${active.url}${active.url.includes("?") ? "&" : "?"}embed=1&theme=${theme}`}
+            title={active.title}
+            loading="lazy"
+            className="block w-full min-w-[720px] border-0"
+            style={{ aspectRatio: active.aspect ?? 16 / 9 }}
+            sandbox="allow-scripts"
+          />
+        </div>
       ) : null}
     </div>
   );

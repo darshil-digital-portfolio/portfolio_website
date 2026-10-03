@@ -23,7 +23,9 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ key
     return new NextResponse(Buffer.from(body), {
       headers: {
         "Content-Type": res.ContentType ?? "application/octet-stream",
-        "Cache-Control": "public, max-age=86400",
+        // No caching in dev, so a re-uploaded diagram shows up on refresh.
+        "Cache-Control":
+          process.env.NODE_ENV === "development" ? "no-store" : "public, max-age=86400",
       },
     });
   } catch {

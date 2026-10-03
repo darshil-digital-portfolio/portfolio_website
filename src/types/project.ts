@@ -45,9 +45,11 @@ export interface ProjectMetric {
 export interface ProjectDiagram {
   type: DiagramType;
   title: string;
-  format?: "mermaid" | "svg" | "image" | "drawio";
+  format?: "mermaid" | "svg" | "image" | "drawio" | "html";
   content?: string;
   url?: string;
+  /** html only: canvas width / height, so the frame fits the diagram without scrolling */
+  aspect?: number;
 }
 
 export interface Milestone {
