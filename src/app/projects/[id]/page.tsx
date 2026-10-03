@@ -5,6 +5,7 @@ import { getAllProjectCards } from "@/data/projectCards";
 import type { ProjectCard, MetricIcon, TimelineEntry } from "@/types/project";
 import { parseTag, TAG_PREFIX_TO_GROUP } from "@/types/project";
 import DiagramTabs from "@/components/DiagramTabs";
+import { BroadcastIcon, GitHubIcon } from "@/components/icons";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -441,7 +442,7 @@ export default async function ProjectPage({ params }: Props) {
       )}
 
       {/* CTAs */}
-      <div className="flex flex-wrap gap-4">
+      <div className="flex flex-wrap items-center gap-4">
         {isShowcase && project.links.demo_video && (
           <a
             href={project.links.demo_video}
@@ -455,25 +456,33 @@ export default async function ProjectPage({ params }: Props) {
             Watch Demo
           </a>
         )}
-        {project.links.github && (
-          <a
-            href={project.links.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-5 py-2.5 rounded-lg bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-sm font-medium hover:bg-slate-700 dark:hover:bg-slate-300 transition-colors"
-          >
-            View on GitHub ↗
-          </a>
-        )}
-        {project.links.live && !isShowcase && (
-          <a
-            href={project.links.live}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-5 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-          >
-            Live Demo ↗
-          </a>
+        {((project.links.live && !isShowcase) || project.links.github) && (
+          <div className="proj-links">
+            {project.links.live && !isShowcase && (
+              <a
+                href={project.links.live}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="live-link live-pill"
+                aria-label={`Visit the live ${project.title} site`}
+              >
+                <BroadcastIcon size={15} />
+                Visit site
+              </a>
+            )}
+            {project.links.github && (
+              <a
+                href={project.links.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="icon-link icon-link-lg"
+                aria-label={`View ${project.title} source on GitHub`}
+                title="Source on GitHub"
+              >
+                <GitHubIcon size={22} />
+              </a>
+            )}
+          </div>
         )}
         {project.links.demo_video && !isShowcase && (
           <a

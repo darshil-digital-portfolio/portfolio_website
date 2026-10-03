@@ -1276,6 +1276,16 @@ body {
   text-decoration: none;
 }
 
+/* On the project page the GitHub mark is a primary action, not a card footnote. */
+.proj-links a.icon-link.icon-link-lg {
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  border-radius: 10px;
+  color: var(--ink);
+  border: 1px solid color-mix(in oklab, var(--ink) 22%, transparent);
+}
+
 /* Details is the primary action, so it keeps its label and leads with the mark. */
 .proj-links a.details-link {
   display: inline-flex;

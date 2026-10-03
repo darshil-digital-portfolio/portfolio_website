@@ -12,6 +12,8 @@ const s3 = new S3Client({
 });
 
 const BUCKET = process.env.PORTFOLIO_S3_BUCKET_NAME ?? "project-cards-for-portfolio";
+// Set to e.g. "preview" on a branch to try out cards without touching the live ones.
+const CARDS_PREFIX = process.env.PORTFOLIO_CARDS_PREFIX ?? "projects";
 const S3_ORIGIN = `https://${BUCKET}.s3.ap-south-1.amazonaws.com`;
 
 function toApiUrl(url: string): string {
@@ -24,14 +26,17 @@ async function fetchCard(slug: string): Promise<ProjectCard | null> {
   try {
     const cmd = new GetObjectCommand({
       Bucket: BUCKET,
-      Key: `projects/${slug}/project_card.json`,
+      Key: `${CARDS_PREFIX}/${slug}/project_card.json`,
     });
     const res = await s3.send(cmd);
     const body = await res.Body?.transformToString();
     if (!body) throw new Error(`Empty body for ${slug}`);
     const card = JSON.parse(body) as ProjectCard;
     if (card.thumbnail) card.thumbnail = toApiUrl(card.thumbnail);
-    card.diagrams = card.diagrams?.map((d) => (d.url ? { ...d, url: toApiUrl(d.url) } : d));
+    // ?updated= busts the proxy's day-long browser cache whenever the card is refreshed.
+    card.diagrams = card.diagrams?.map((d) =>
+      d.url ? { ...d, url: `${toApiUrl(d.url)}?updated=${card.last_updated}` } : d
+    );
     return card;
   } catch (err) {
     console.error(`[projectCards] failed to fetch ${slug}:`, err);
